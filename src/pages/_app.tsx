@@ -12,7 +12,8 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 1200) {
-        setNotPc(true);
+        // 이거 true로 바꿔야함
+        setNotPc(false);
       } else {
         setNotPc(false);
       }

@@ -1,14 +1,13 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const HeaderStyled = styled.div`
   &.headerOff {
     display: none;
   }
   color: white;
-  background: #2196f3;
+  background: #c47ad7;
   padding: 20px;
   height: 64px;
-  /* border-bottom: 1px solid #333; */
   .navigation {
     font-size: 1.25rem;
     justify-content: space-between;
