@@ -42,4 +42,14 @@ export const sidebarMenus = createSidebarMenus([
       },
     ],
   },
+  {
+    key: "/reports",
+    label: "신고 관리",
+    children: [
+      {
+        key: "/reports/comment",
+        label: "댓글",
+      },
+    ],
+  },
 ]);
