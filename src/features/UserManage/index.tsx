@@ -5,9 +5,11 @@ import clsx from "clsx";
 import api from "@/utill/api";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { useRouter } from "next/router";
 const sample = [
   {
-    id: "test@email",
+    id: 1,
+    email: "test@email",
     user: "마루",
     phone: "010-1111-1111",
     noti: 6,
@@ -16,7 +18,8 @@ const sample = [
     popcornCount: 1245,
   },
   {
-    id: "test11@email",
+    id: 2,
+    email: "test11@email",
     user: "강쥐",
     phone: "010-2222-2222",
     noti: 3,
@@ -25,7 +28,8 @@ const sample = [
     popcornCount: 120,
   },
   {
-    id: "test2@email",
+    id: 3,
+    email: "test2@email",
     user: "초코",
     phone: "010-2333-2222",
     noti: 1,
@@ -41,6 +45,7 @@ const UserManage = () => {
   const [sortKey, setSortKey] = useState("user");
   const [users, setUsers] = useState<any[]>([]);
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
+  const router = useRouter();
 
   const getUserList = async () => {
     try {
@@ -50,7 +55,7 @@ const UserManage = () => {
 
       // const mapped = data.map((x: any) => ({
       //   key: x.id,
-      //   Id: x.id,
+      //   email: x.email,
       //   user: x.name,
       //   phone: x.phone,
       //   noti: x.reportCount,
@@ -109,7 +114,8 @@ const UserManage = () => {
   // 엑셀 다운로드
   const handleDownloadExcel = () => {
     const excelData = users.map((user) => ({
-      아이디: user.Id,
+      순서: user.id,
+      아이디: user.email,
       이름: user.user,
       전화번호: user.phone,
       신고횟수: user.noti,
@@ -135,9 +141,9 @@ const UserManage = () => {
   // 컬럼
   const col: any = [
     {
-      key: "id",
+      key: "email",
       title: "아이디",
-      dataIndex: "Id",
+      dataIndex: "email",
     },
     {
       key: "user",
@@ -164,7 +170,15 @@ const UserManage = () => {
       title: "관리",
       render: (data: any) => {
         console.log(data, "asd");
-        return <Button>관리</Button>;
+        return (
+          <Button
+            onClick={() => {
+              router.push(`/memberedit/${data.id}`);
+            }}
+          >
+            관리
+          </Button>
+        );
       },
     },
   ];
@@ -172,7 +186,8 @@ const UserManage = () => {
   const list = useMemo(() => {
     return sortedUsers.map((x: any) => ({
       key: x?.id,
-      Id: x?.id,
+      id: x?.id,
+      email: x?.email,
       user: x?.user,
       phone: x?.phone,
       noti: x?.noti,
@@ -200,7 +215,16 @@ const UserManage = () => {
 
   return (
     <UserManageStyled className={clsx("manage-wrap")}>
-      <div className="manage-title">회원 관리</div>
+      <div className="manage-title-box">
+        <div className="manage-title">회원 관리</div>
+        <Button
+          onClick={() => {
+            router.push("/memberadd");
+          }}
+        >
+          회원추가
+        </Button>
+      </div>
       <div className="manage-select-box">
         <Select
           value={userOrder}
