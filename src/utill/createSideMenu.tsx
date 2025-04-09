@@ -56,4 +56,8 @@ export const sidebarMenus = createSidebarMenus([
       },
     ],
   },
+  {
+    key: "/notice",
+    label: "공지사항",
+  },
 ]);
