@@ -5,6 +5,7 @@ import type { ColumnsType } from "antd/es/table";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { NoticeStyled } from "./styled";
 import clsx from "clsx";
+import { useRouter } from "next/router";
 
 interface Notice {
   id: string;
@@ -44,6 +45,8 @@ const data: Notice[] = [
 ];
 
 const NoticeManage = () => {
+  const router = useRouter();
+
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -101,7 +104,13 @@ const NoticeManage = () => {
     <NoticeStyled className={clsx("notice-wrap")}>
       <div className="notice-box">
         <h2 className="notice-title">공지사항 관리</h2>
-        <Button type="primary" icon={<PlusOutlined />}>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => {
+            router.push("/newnotice");
+          }}
+        >
           새 공지사항
         </Button>
       </div>
