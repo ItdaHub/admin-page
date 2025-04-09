@@ -9,12 +9,8 @@ import clsx from "clsx";
 import api from "@/utill/api";
 import { useRouter } from "next/router";
 
-type MemberAddProps = {
-  id?: number; //id가 있으면 수정, 없으면 등록
-  title: string;
-};
-
-const MemberAdd = ({ id, title }: MemberAddProps) => {
+const MemberAdd = ({ id }: { id?: number }) => {
+  //id가 있으면 수정, 없으면 등록
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -268,8 +264,6 @@ const MemberAdd = ({ id, title }: MemberAddProps) => {
   return (
     <MemberAddStyled className={clsx("add-wrap")}>
       <form onSubmit={userFormik.handleSubmit} className="add-form">
-        <div className="add-title">{title}</div>
-
         <div className="add-box">
           <label>이름</label>
           <Input
