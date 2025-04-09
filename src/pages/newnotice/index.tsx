@@ -1,7 +1,7 @@
-import NewNotice from "@/features/NewNotice";
+import NewNoticeManage from "@/features/NewNotice";
 
-const newnotice = () => {
-  return <NewNotice />;
+const Newnotice = () => {
+  return <NewNoticeManage />;
 };
 
-export default newnotice;
+export default Newnotice;

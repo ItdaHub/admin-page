@@ -15,5 +15,18 @@ export const NewNoticeStyled = styled.div`
         margin-bottom: 10px;
       }
     }
+
+    .form-item {
+      margin: 20px 0;
+      display: flex;
+      flex-direction: column;
+      .form-label {
+        margin-bottom: 10px;
+      }
+      .form-error {
+        color: red;
+        font-size: 14px;
+      }
+    }
   }
 `;
