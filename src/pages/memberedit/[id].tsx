@@ -1,7 +1,13 @@
 import MemberAdd from "@/components/MemberAdd";
+import TitleCompo from "@/components/TitleCompo";
 
 const MemberEditPage = ({ id }: any) => {
-  return <MemberAdd id={Number(id)} title="회원 수정" />;
+  return (
+    <>
+      <TitleCompo title="회원 수정" />
+      <MemberAdd id={Number(id)} />
+    </>
+  );
 };
 
 export default MemberEditPage;

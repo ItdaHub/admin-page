@@ -60,4 +60,8 @@ export const sidebarMenus = createSidebarMenus([
     key: "/notice",
     label: "공지사항",
   },
+  {
+    key: "/banners",
+    label: "배너 관리",
+  },
 ]);

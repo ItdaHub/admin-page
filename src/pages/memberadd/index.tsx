@@ -1,7 +1,13 @@
 import MemberAdd from "@/components/MemberAdd";
+import TitleCompo from "@/components/TitleCompo";
 
 const memberadd = () => {
-  return <MemberAdd title="회원 추가" />;
+  return (
+    <>
+      <TitleCompo title="회원 추가" />
+      <MemberAdd />
+    </>
+  );
 };
 
 export default memberadd;

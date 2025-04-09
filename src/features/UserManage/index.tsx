@@ -141,6 +141,11 @@ const UserManage = () => {
   // 컬럼
   const col: any = [
     {
+      key: "num",
+      title: "번호",
+      dataIndex: "num",
+    },
+    {
       key: "email",
       title: "아이디",
       dataIndex: "email",
@@ -184,7 +189,8 @@ const UserManage = () => {
   ];
 
   const list = useMemo(() => {
-    return sortedUsers.map((x: any) => ({
+    return sortedUsers.map((x: any, i: number) => ({
+      num: i + 1,
       key: x?.id,
       id: x?.id,
       email: x?.email,
