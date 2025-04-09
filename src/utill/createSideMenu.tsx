@@ -50,6 +50,10 @@ export const sidebarMenus = createSidebarMenus([
         key: "/reports/comment",
         label: "댓글",
       },
+      {
+        key: "/reports/novel",
+        label: "소설",
+      },
     ],
   },
 ]);

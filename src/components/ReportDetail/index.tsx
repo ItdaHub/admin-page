@@ -3,24 +3,27 @@ import { ReportDetailStyled } from "./styled";
 import api from "@/utill/api";
 import router from "next/router";
 
-type Props = {
-  data: {
-    id: number;
-    title: string;
-    content: string;
-    reporter: string;
-    date: string;
-  };
-};
+interface ReportData {
+  id: number;
+  title: string;
+  content: string;
+  reporter: string;
+  date: string;
+}
 
-const ReportDetail = ({ data }: Props) => {
+interface Props {
+  data: ReportData;
+  type: "comment" | "novel";
+}
+
+const ReportDetail = ({ data, type }: Props) => {
   const handleDelete = async () => {
     const confirm = window.confirm("정말 삭제하시겠습니까?");
     if (!confirm) return;
 
     try {
       await api.delete(`/reports/comment/${data.id}`); // ← id 필요
-      alert("삭제되었습니다.");
+      alert(`${type === "comment" ? "댓글" : "소설"} 신고가 삭제되었습니다.`);
       router.push("/reports");
     } catch (error) {
       console.error("삭제 실패", error);
@@ -30,7 +33,9 @@ const ReportDetail = ({ data }: Props) => {
 
   return (
     <ReportDetailStyled className={clsx("reportdetail-wrap")}>
-      <div className="header">댓글 신고</div>
+      <h2 className="header">
+        {type === "comment" ? "댓글" : "소설"} 신고 상세
+      </h2>
 
       <div className="row">
         <div className="label">제목</div>
