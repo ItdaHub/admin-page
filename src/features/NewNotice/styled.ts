@@ -27,6 +27,10 @@ export const NewNoticeStyled = styled.div`
         color: red;
         font-size: 14px;
       }
+
+      .ant-input {
+        padding: 14px;
+      }
     }
   }
 `;
