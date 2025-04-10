@@ -1,7 +1,7 @@
 import BannerPage from "@/features/BannerPage";
 
-const banner = () => {
+const BannerList = () => {
   return <BannerPage />;
 };
 
-export default banner;
+export default BannerList;
