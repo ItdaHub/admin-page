@@ -19,25 +19,25 @@ const dummyData: Banner[] = [
   {
     id: 1,
     title: "봄맞이 이벤트",
-    imageUrl: "/file.svg",
+    imageUrl: "/banner.png",
     linkUrl: "/login",
   },
   {
     id: 2,
     title: "여름 세일 시작!",
-    imageUrl: "/globe.svg",
+    imageUrl: "/banner2.png",
     linkUrl: "/signup",
   },
   {
     id: 3,
     title: "가을엔 독서",
-    imageUrl: "/next.svg",
+    imageUrl: "/banner3.png",
     linkUrl: "/",
   },
   {
     id: 4,
     title: "겨울 한정 배너",
-    imageUrl: "/window.svg",
+    imageUrl: "/banner4.png",
     linkUrl: "/notice",
   },
 ];
@@ -49,8 +49,6 @@ const BannerPage = () => {
 
   // test
   useEffect(() => {
-    console.log(banners, "??");
-
     // 현재는 더미 데이터 사용
     setBanners(dummyData);
   }, []);
@@ -100,12 +98,7 @@ const BannerPage = () => {
       title: "배너 미리보기",
       dataIndex: "imageUrl",
       render: (_: any, record: Banner) => (
-        <img
-          src={record.imageUrl}
-          alt={record.title}
-          className="banner-img"
-          style={{ width: 20 }}
-        />
+        <img src={record.imageUrl} alt={record.title} className="banner-img" />
       ),
     },
     {
@@ -115,11 +108,6 @@ const BannerPage = () => {
     {
       title: "URL",
       dataIndex: "linkUrl",
-      render: (link: string) => (
-        <Link href={`http://localhost:3000${link}`} className="banner-linkUrl">
-          {link}
-        </Link>
-      ),
     },
     {
       title: "관리",
@@ -151,6 +139,23 @@ const BannerPage = () => {
         rowKey="id"
         pagination={false}
         bordered
+        onRow={(record) => {
+          // return {
+          //   onClick: () => {
+          //     router.push(`/bannerdetail/${record.id}`);
+          //   },
+          // };
+          return {
+            onClick: () => {
+              router.push({
+                pathname: `/bannerdetail/${record.id}`,
+                query: {
+                  data: JSON.stringify(record), // 더미 데이터 직접 넘기기
+                },
+              });
+            },
+          };
+        }}
         locale={{
           emptyText:
             "등록된 배너가 없습니다. 상단의 [등록] 버튼을 눌러 추가해보세요.",
