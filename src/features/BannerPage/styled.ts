@@ -9,5 +9,8 @@ export const BannerPageStyled = styled.div`
       justify-content: space-between;
       margin-bottom: 16px;
     }
+    .banner-img {
+      width: 150px;
+    }
   }
 `;
