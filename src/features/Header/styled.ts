@@ -8,6 +8,9 @@ export const HeaderStyled = styled.div`
   background: #c47ad7;
   padding: 20px;
   height: 64px;
+  .right {
+    cursor: pointer;
+  }
   .navigation {
     font-size: 1.25rem;
     justify-content: space-between;

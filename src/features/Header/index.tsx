@@ -35,6 +35,15 @@ const Header = ({ className }: HeaderProps) => {
         <div className="left">
           <Link href="/dashboard">관리자 페이지</Link>
         </div>
+        <div
+          className="right"
+          onClick={() => {
+            sessionStorage.removeItem("isAdminLoggedIn");
+            router.push("/login");
+          }}
+        >
+          로그아웃
+        </div>
       </div>
     </HeaderStyled>
   );
