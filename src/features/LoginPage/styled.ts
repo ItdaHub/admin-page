@@ -60,11 +60,14 @@ export const LoginPageStyled = styled.div`
         }
       }
     }
+    .login-pw-box {
+      position: relative;
+    }
     .toggleBtn {
       font-size: 20px;
       position: absolute;
-      top: 255px;
-      right: 250px;
+      top: 16px;
+      right: 15px;
     }
   }
 `;

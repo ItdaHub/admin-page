@@ -33,7 +33,7 @@ export default function App({ Component, pageProps }: AppProps) {
     const handleResize = () => {
       if (window.innerWidth <= 1200) {
         // 이거 true로 바꿔야함
-        setNotPc(true);
+        setNotPc(false);
       } else {
         setNotPc(false);
       }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { LoginPageStyled } from "./styled";
-import axios from "axios";
+import api from "../../utill/api";
 import clsx from "clsx";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 
@@ -24,6 +24,8 @@ const LoginPage = () => {
   const handleLoginSubmit = async (e: any) => {
     e.preventDefault();
 
+    console.log("로그인 시도 - 이메일:", email, "비밀번호:", password); // 추가
+
     if (!email) {
       setErrorMessage("아이디(이메일)를 입력해주세요");
       return;
@@ -35,29 +37,39 @@ const LoginPage = () => {
     }
 
     try {
-      // Axios로 Get요청(입력한 아이디와 비밀번호가 일치하는지 + 관리자인지 확인)
-      const response = await axios.get("/api/adminLogin", {
-        params: {
-          email,
-          password,
-        },
+      console.log("로그인 요청 전 - URL:", "/auth/admin/login", "데이터:", {
+        email,
+        password,
+      }); // 추가
+      const response = await api.post("/auth/admin/login", {
+        email,
+        password,
       });
+      console.log(
+        "로그인 요청 후 - 응답 상태:",
+        response.status,
+        "응답 데이터:",
+        response.data
+      ); // 추가
 
       // 성공적으로 로그인한 경우 대시보드로 이동
-      if (response.data.success) {
+      if (response.status === 200 || response.status === 201) {
         setErrorMessage("");
-
-        // 로그인 상태 저장
         localStorage.setItem("isAdminLoggedIn", "true");
 
-        // 로그인 성공 후 대시보드로 이동
+        // ✅ 응답 데이터 확인 및 상태 관리 (예시)
+        console.log("로그인 성공 응답:", response.data);
+        // 필요하다면 Redux, Zustand, Context API 등의 상태 관리 도구를 사용하여
+        // 로그인 상태와 사용자 정보를 전역으로 관리합니다.
+        // 예시: dispatch({ type: 'LOGIN_SUCCESS', payload: response.data.user });
+
         router.push("/dashboard");
       } else {
         setErrorMessage("아이디 또는 비밀번호를 확인해주세요");
       }
-    } catch (error) {
-      // 요청 오류
-      setErrorMessage(`${error} : 서버 오류가 발생했습니다`);
+    } catch (error: any) {
+      setErrorMessage(`서버 오류가 발생했습니다: ${error.message}`);
+      console.error("로그인 요청 오류:", error);
     }
   };
 
@@ -82,7 +94,7 @@ const LoginPage = () => {
           </div>
 
           {/* 비밀번호 */}
-          <div>
+          <div className="login-pw-box">
             <input
               className="login-pw"
               type={toggle ? "password" : "text"}
@@ -94,26 +106,25 @@ const LoginPage = () => {
               }}
               required
             />
+            {/* 토글 버튼 */}
+            {toggle ? (
+              <EyeInvisibleOutlined
+                className="toggleBtn"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setToggle(!toggle);
+                }}
+              />
+            ) : (
+              <EyeOutlined
+                className="toggleBtn"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setToggle(!toggle);
+                }}
+              />
+            )}
           </div>
-
-          {/* 토글 버튼 */}
-          {toggle ? (
-            <EyeInvisibleOutlined
-              className="toggleBtn"
-              onClick={(e) => {
-                e.preventDefault();
-                setToggle(!toggle);
-              }}
-            />
-          ) : (
-            <EyeOutlined
-              className="toggleBtn"
-              onClick={(e) => {
-                e.preventDefault();
-                setToggle(!toggle);
-              }}
-            />
-          )}
 
           {/* 오류 메시지 */}
           {errorMessage && (
