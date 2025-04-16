@@ -63,8 +63,8 @@ export const LoginPageStyled = styled.div`
     .toggleBtn {
       font-size: 20px;
       position: absolute;
-      top: 370px;
-      right: 130px;
+      top: 255px;
+      right: 250px;
     }
   }
 `;

@@ -11,7 +11,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
     "@types/styled-components": "^5.1.34",
-    "antd": "^5.17.4",
+    "antd": "^5.24.7",
     "axios": "^1.8.4",
     "chart.js": "^4.4.8",
     "clsx": "^2.1.1",
