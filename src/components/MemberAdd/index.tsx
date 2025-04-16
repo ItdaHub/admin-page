@@ -47,7 +47,6 @@ const MemberAdd = ({ id }: { id?: number }) => {
       birthYear: "",
       role: "user",
       status: "active",
-      reportCount: 0,
     },
     // 버튼을 눌렀을때 실행될 것(axios요청)
     onSubmit: async (values) => {
@@ -59,7 +58,7 @@ const MemberAdd = ({ id }: { id?: number }) => {
       try {
         if (id) {
           // 수정
-          await api.patch(`/members/${id}`, values);
+          await api.put(`/users/${id}`, values);
           alert("수정 완료");
           router.push("/users/manage");
         } else {
@@ -97,8 +96,9 @@ const MemberAdd = ({ id }: { id?: number }) => {
       if (id) {
         setLoading(true);
         try {
-          const res = await api.get(`/members/${id}`);
+          const res = await api.get(`/users/${id}`);
           const data = res.data;
+          console.log("ssssssssss", data);
           userFormik.setValues({
             ...userFormik.values,
             name: data.name || "",
@@ -106,9 +106,8 @@ const MemberAdd = ({ id }: { id?: number }) => {
             phone: data.phone || "",
             nickname: data.nickname || "",
             birthYear: data.birthYear || "",
-            role: data.role || "user",
-            status: data.status || "active",
-            reportCount: data.reportCount || 0,
+            role: data.user_type,
+            status: data.status,
             password: "",
             passwordCheck: "",
           });
@@ -430,23 +429,6 @@ const MemberAdd = ({ id }: { id?: number }) => {
             <Radio value="suspended">정지</Radio>
           </Radio.Group>
         </div>
-
-        <div className="add-box">
-          <label>신고 횟수</label>
-          <Input
-            placeholder="신고 횟수를 입력해주세요"
-            type="number"
-            name="reportCount"
-            value={userFormik.values.reportCount}
-            onChange={(e) => {
-              const value = e.target.value;
-              if (value.length <= 3) {
-                userFormik.handleChange(e);
-              }
-            }}
-          />
-        </div>
-
         <Button htmlType="submit" disabled={!id && checkDisabled()}>
           {id ? "수정하기" : "등록하기"}
         </Button>

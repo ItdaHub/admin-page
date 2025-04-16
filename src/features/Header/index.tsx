@@ -33,7 +33,7 @@ const Header = ({ className }: HeaderProps) => {
     >
       <div className="navigation">
         <div className="left">
-          <Link href="/">관리자 페이지</Link>
+          <Link href="/dashboard">관리자 페이지</Link>
         </div>
       </div>
     </HeaderStyled>
