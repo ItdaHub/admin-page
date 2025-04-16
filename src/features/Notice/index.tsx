@@ -7,6 +7,7 @@ import { NoticeStyled } from "./styled";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import api from "@/utill/api";
+import TitleCompo from "@/components/TitleCompo";
 
 interface Notice {
   id: string;
@@ -143,7 +144,7 @@ const NoticeManage = () => {
   return (
     <NoticeStyled className={clsx("notice-wrap")}>
       <div className="notice-box">
-        <h2 className="notice-title">공지사항 관리</h2>
+        <TitleCompo title="공지사항 관리" />
         <Button
           type="primary"
           icon={<PlusOutlined />}
