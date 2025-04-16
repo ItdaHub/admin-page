@@ -18,7 +18,6 @@ interface Novel {
 
 const ExhibitPage = () => {
   const [exhibits, setExhibits] = useState<any[]>([]);
-  const [sortedExhibits, setSortedExhibits] = useState<any[]>([]);
   const router = useRouter();
 
   // ✅ 더미 데이터 생성 함수

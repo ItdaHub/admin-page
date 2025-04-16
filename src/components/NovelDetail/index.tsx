@@ -38,7 +38,7 @@ const NovelDetail = ({ novelId }: { novelId: number }) => {
             10
           )}`,
           reportCount: Math.floor(Math.random() * 10),
-          writerName: "작가, 작가, 작가, 작가, 작가, 작가, 작가, 작가, 작가",
+          writerName: "작가",
         },
         {
           id: 2,
