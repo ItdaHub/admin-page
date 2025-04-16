@@ -6,71 +6,40 @@ import api from "@/utill/api";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { useRouter } from "next/router";
-const sample = [
-  {
-    id: 1,
-    email: "test@email",
-    user: "마루",
-    phone: "010-1111-1111",
-    noti: 6,
-    status: "stop",
-    createdAt: "2024-11-03",
-    popcornCount: 1245,
-  },
-  {
-    id: 2,
-    email: "test11@email",
-    user: "강쥐",
-    phone: "010-2222-2222",
-    noti: 3,
-    status: "run",
-    createdAt: "2024-11-02",
-    popcornCount: 120,
-  },
-  {
-    id: 3,
-    email: "test2@email",
-    user: "초코",
-    phone: "010-2333-2222",
-    noti: 1,
-    status: "run",
-    createdAt: "2024-11-01",
-    popcornCount: 12,
-  },
-];
+
 const UserManage = () => {
   const [userOrder, setUserOrder] = useState("DESC");
   const [notiOrder, setNotiOrder] = useState("DESC");
   const [potinOrder, setPointOrder] = useState("DESC");
-  const [sortKey, setSortKey] = useState("user");
+  const [sortKey, setSortKey] = useState("createdAt"); // 기본 정렬 키를 'createdAt'으로 변경
   const [users, setUsers] = useState<any[]>([]);
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
   const router = useRouter();
 
   const getUserList = async () => {
     try {
-      // 유저 정보를 불러오는 axios요청
-      // const res = await api.get("/manage/users");
-      // const data = res.data;
+      // ✅ 유저 정보를 불러오는 axios 요청 (백엔드 API 엔드포인트에 맞춰 수정)
+      const res = await api.get("/users"); // 예시: "/users" 또는 "/manage/users"
+      const data = res.data;
 
-      // const mapped = data.map((x: any) => ({
-      //   key: x.id,
-      //   email: x.email,
-      //   user: x.name,
-      //   phone: x.phone,
-      //   noti: x.reportCount,
-      //   status:
-      //     x.status === "stop" ? (
-      //       <div className="stop">정지</div>
-      //     ) : (
-      //       <div className="run">사용</div>
-      //     ),
-      //   joinedDate: x.joinedDate, // 가입한 날짜
-      //   popcorn: x.popcornCount, // 구매한 팝콘 수
-      // }));
+      const mapped = data.map((x: any) => ({
+        key: x.id,
+        id: x.id,
+        email: x.email,
+        user: x.name || x.nickname || "이름 없음", // 이름 또는 닉네임 사용, 없으면 기본값
+        phone: x.phone || "전화번호 없음",
+        noti: x.reportCount || 0,
+        status:
+          x.status === "stop" ? (
+            <div className="stop">정지</div>
+          ) : (
+            <div className="run">사용</div>
+          ),
+        createdAt: x.joinedDate || x.createdAt, // 가입 날짜 필드명 확인
+        popcornCount: x.popcornCount || 0, // 팝콘 수 필드명 확인
+      }));
 
-      // setUsers(mapped);
-      setUsers(sample);
+      setUsers(mapped);
     } catch (err) {
       console.error("유저 불러오기 실패", err);
     }
@@ -85,7 +54,7 @@ const UserManage = () => {
   const sortUsers = () => {
     let sorted = [...users];
 
-    if (sortKey === "user") {
+    if (sortKey === "createdAt") {
       sorted.sort((a, b) =>
         userOrder === "DESC"
           ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -95,15 +64,22 @@ const UserManage = () => {
       sorted.sort((a, b) =>
         notiOrder === "DESC" ? b.noti - a.noti : a.noti - b.noti
       );
-    } else if (sortKey === "popcorn") {
+    } else if (sortKey === "popcornCount") {
       sorted.sort((a, b) =>
         potinOrder === "DESC"
           ? b.popcornCount - a.popcornCount
           : a.popcornCount - b.popcornCount
       );
+    } else if (sortKey === "user") {
+      sorted.sort((a, b) => {
+        const nameA = a.user.toLowerCase();
+        const nameB = b.user.toLowerCase();
+        return userOrder === "ASC"
+          ? nameA.localeCompare(nameB)
+          : nameB.localeCompare(nameA);
+      });
     }
     setSortedUsers(sorted);
-    // setUsers(sorted);
   };
 
   // 유저정렬
@@ -124,8 +100,7 @@ const UserManage = () => {
       상태: user.status?.props?.children,
     }));
 
-    // const worksheet = XLSX.utils.json_to_sheet(excelData);
-    const worksheet = XLSX.utils.json_to_sheet(sample);
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "회원목록");
 
@@ -154,6 +129,14 @@ const UserManage = () => {
       key: "user",
       title: "이름",
       dataIndex: "user",
+      sorter: true,
+      sortDirections: ["ascend", "descend"],
+      onHeaderCell: (column: any) => ({
+        onClick: () => {
+          setSortKey("user");
+          setUserOrder(userOrder === "DESC" ? "ASC" : "DESC");
+        },
+      }),
     },
     {
       key: "phone",
@@ -164,6 +147,14 @@ const UserManage = () => {
       key: "noti",
       title: "신고 횟수",
       dataIndex: "noti",
+      sorter: true,
+      sortDirections: ["ascend", "descend"],
+      onHeaderCell: (column: any) => ({
+        onClick: () => {
+          setSortKey("noti");
+          setNotiOrder(notiOrder === "DESC" ? "ASC" : "DESC");
+        },
+      }),
     },
     {
       key: "status",
@@ -173,18 +164,15 @@ const UserManage = () => {
     {
       key: "setting",
       title: "관리",
-      render: (data: any) => {
-        console.log(data, "asd");
-        return (
-          <Button
-            onClick={() => {
-              router.push(`/memberedit/${data.id}`);
-            }}
-          >
-            관리
-          </Button>
-        );
-      },
+      render: (data: any) => (
+        <Button
+          onClick={() => {
+            router.push(`/memberedit/${data.id}`);
+          }}
+        >
+          관리
+        </Button>
+      ),
     },
   ];
 
@@ -203,6 +191,8 @@ const UserManage = () => {
         ) : (
           <div className="run">사용</div>
         ),
+      createdAt: x?.createdAt, // 가입 날짜 포함
+      popcornCount: x?.popcornCount, // 팝콘 수 포함
     }));
   }, [sortedUsers]);
 
@@ -237,7 +227,7 @@ const UserManage = () => {
           options={option1}
           onChange={(e) => {
             setUserOrder(e);
-            setSortKey("user");
+            setSortKey("createdAt"); // 최신순/오래된순 정렬 기준을 가입일로 변경
           }}
         />
         <Select
@@ -253,7 +243,7 @@ const UserManage = () => {
           options={option3}
           onChange={(e) => {
             setPointOrder(e);
-            setSortKey("popcorn");
+            setSortKey("popcornCount");
           }}
         />
       </div>
@@ -261,7 +251,8 @@ const UserManage = () => {
         <div className="manage-total-num">총 {list.length}명</div>
         <Button onClick={handleDownloadExcel}>엑셀</Button>
       </div>
-      <Table columns={col} dataSource={list} />
+      <Table columns={col} dataSource={list} rowKey="id" />{" "}
+      {/* rowKey prop 추가 */}
     </UserManageStyled>
   );
 };
