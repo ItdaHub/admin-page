@@ -13,6 +13,7 @@ interface Novel {
   title: string;
   writer: string;
   date: string;
+  status: string;
 }
 
 const ExhibitPage = () => {
@@ -30,6 +31,7 @@ const ExhibitPage = () => {
         title: `완결 소설 ${i}`,
         writer: `작가 ${String.fromCharCode(65 + (i % 26))}`, // A, B, C... 순환
         date: `2025-04-${String(10 + (i % 20)).padStart(2, "0")}`, // 임의의 날짜 생성
+        status: "대기중",
       });
     }
     return dummy;
@@ -42,18 +44,24 @@ const ExhibitPage = () => {
       setExhibits(dummyData);
 
       // 완결된 소설 axios 요청
-      // const res = await api.get("/complete");
-      // const data = res.data;
+      const res = await api.get("/complete");
+      const data = res.data;
 
-      // console.log(data);
+      console.log(data);
 
-      // const mapped = data.map((x: any) => ({
-      // key: x.id,
-      // id: x.id, //소설 id
-      // title: x.title, //소설 제목
-      // writer: x.writer, //소설 작가
-      // date: x.date, //소설 완결된 날짜
-      // }));
+      const mapped = data.map((x: any) => ({
+        key: x.id,
+        id: x.id, //소설 id
+        title: x.title, //소설 제목
+        writer: x.writer, //소설 작가
+        date: x.date, //소설 완결된 날짜
+        status:
+          x.status === "ready" ? (
+            <div className="ready">대기중</div>
+          ) : (
+            <div className="publish">출품 완료</div>
+          ),
+      }));
 
       // setExhibits(mapped);
     } catch (err) {
@@ -82,6 +90,11 @@ const ExhibitPage = () => {
       key: "date",
       title: "날짜",
       dataIndex: "date",
+    },
+    {
+      key: "status",
+      title: "상태",
+      dataIndex: "status",
     },
   ];
 
