@@ -4,6 +4,7 @@ import { ExhibitPageStyled } from "./styled";
 import clsx from "clsx";
 import api from "@/utill/api";
 import { useRouter } from "next/router";
+import TitleCompo from "@/components/TitleCompo";
 
 // 더미 데이터 타입 정의
 interface Novel {
@@ -86,6 +87,7 @@ const ExhibitPage = () => {
 
   return (
     <ExhibitPageStyled className={clsx("exhibit-wrap")}>
+      <TitleCompo title="출품 관리" />
       <Table
         columns={col}
         dataSource={exhibits}

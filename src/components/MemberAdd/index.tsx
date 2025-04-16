@@ -8,6 +8,7 @@ import { validationPass, validationPassCheck } from "@/utill/vail";
 import clsx from "clsx";
 import api from "@/utill/api";
 import { useRouter } from "next/router";
+import TitleCompo from "../TitleCompo";
 
 const MemberAdd = ({ id }: { id?: number }) => {
   //id가 있으면 수정, 없으면 등록
@@ -262,6 +263,7 @@ const MemberAdd = ({ id }: { id?: number }) => {
 
   return (
     <MemberAddStyled className={clsx("add-wrap")}>
+      <TitleCompo title={id ? "회원 수정" : "회원 추가"} />
       <form onSubmit={userFormik.handleSubmit} className="add-form">
         <div className="add-box">
           <label>이름</label>

@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const NovelDetailStyled = styled.div`
   &.detail-wrap {
+    padding: 24px;
     ul {
       list-style: none;
     }
