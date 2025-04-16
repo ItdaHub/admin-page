@@ -6,11 +6,12 @@ import api from "@/utill/api";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { useRouter } from "next/router";
+import TitleCompo from "@/components/TitleCompo";
 
 const UserManage = () => {
   const [userOrder, setUserOrder] = useState("DESC");
   const [notiOrder, setNotiOrder] = useState("DESC");
-  const [sortKey, setSortKey] = useState("created_at"); // 기본 정렬 키를 'created_at'으로 변경
+  const [sortKey, setSortKey] = useState("created_at");
   const [users, setUsers] = useState<any[]>([]);
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -109,24 +110,23 @@ const UserManage = () => {
     saveAs(file, "회원목록.xlsx");
   };
 
-  // 회원탈퇴
+  // 회원삭제
   const WithdrawUser = async () => {
     if (selectedRowKeys.length === 0) {
-      alert("탈퇴시킬 회원을 선택해주세요.");
+      alert("삭제할 회원을 선택해주세요.");
       return;
     }
 
     try {
-      //선택된 회원들 탈퇴 axios post요청
-      const res = await api.post("/users/withdraw", {
-        userIds: selectedRowKeys,
+      await api.delete("/users/admin/delete", {
+        data: { userIds: selectedRowKeys },
       });
-      alert("선택한 회원을 탈퇴시켰습니다.");
-      getUserList(); // 회원 목록 다시 불러오기
-      setSelectedRowKeys([]); // 선택된 키 초기화
+      alert("선택한 회원을 완전히 삭제했습니다.");
+      getUserList(); // 목록 다시 불러오기
+      setSelectedRowKeys([]); // 선택 초기화
     } catch (err) {
-      console.error("회원 탈퇴 실패:", err);
-      alert("회원 탈퇴에 실패했습니다. 잠시후 다시 시도해주세요.");
+      console.error("회원 삭제 실패:", err);
+      alert("회원 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.");
     }
   };
 
@@ -233,7 +233,7 @@ const UserManage = () => {
   return (
     <UserManageStyled className={clsx("manage-wrap")}>
       <div className="manage-title-box">
-        <div className="manage-title">회원 관리</div>
+        <TitleCompo title="회원 관리" />
         <div>
           <Button
             onClick={() => {
@@ -243,7 +243,7 @@ const UserManage = () => {
             회원추가
           </Button>
           <Button className="manage-delete-button" onClick={WithdrawUser}>
-            회원탈퇴
+            회원삭제
           </Button>
         </div>
       </div>

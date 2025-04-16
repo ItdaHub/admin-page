@@ -58,4 +58,8 @@ export const sidebarMenus = createSidebarMenus([
     key: "/bannerlist",
     label: "배너 관리",
   },
+  {
+    key: "/exhibit",
+    label: "출품 관리",
+  },
 ]);
