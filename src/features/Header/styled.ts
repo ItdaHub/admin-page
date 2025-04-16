@@ -10,6 +10,7 @@ export const HeaderStyled = styled.div`
   height: 64px;
   .right {
     cursor: pointer;
+    font-size: 18px;
   }
   .navigation {
     font-size: 1.25rem;

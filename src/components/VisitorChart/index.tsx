@@ -16,6 +16,7 @@ import {
   Legend,
 } from "chart.js";
 import clsx from "clsx";
+import TitleCompo from "../TitleCompo";
 
 // Chart.js에 필요한 스케일과 요소들 등록
 ChartJS.register(
@@ -98,6 +99,7 @@ const VisitorChart = () => {
 
   return (
     <VisitorChartStyled className={clsx("visitor-wrap")}>
+      <TitleCompo title="대시보드" />
       <div style={{ padding: "30px" }}>
         <RangePicker
           value={dateRange}
