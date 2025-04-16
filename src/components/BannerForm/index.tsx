@@ -22,6 +22,9 @@ const validate = (values: FormState) => {
 
   if (!values.url) {
     errors.url = "연결 URL을 입력하세요.";
+  } else if (!/^\/[\w\-\/]*$/.test(values.url)) {
+    errors.url =
+      "URL은 '/'로 시작해야 하며 영문, 숫자, '-', '/'만 사용할 수 있습니다.";
   }
 
   if (!values.image) {
@@ -50,7 +53,7 @@ const BannerForm = () => {
           formData.append("image", values.image);
         }
 
-        const res = await api.post("/auth/banner", formData);
+        const res = await api.post("/banner/register", formData);
         message.success("배너가 등록되었습니다.");
         router.push("/banners");
       } catch (err) {

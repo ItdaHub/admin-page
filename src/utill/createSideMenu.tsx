@@ -61,7 +61,7 @@ export const sidebarMenus = createSidebarMenus([
     label: "공지사항",
   },
   {
-    key: "/banners",
+    key: "/bannerlist",
     label: "배너 관리",
   },
 ]);

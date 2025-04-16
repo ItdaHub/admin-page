@@ -20,25 +20,25 @@ const dummyData: Banner[] = [
     id: 1,
     title: "봄맞이 이벤트",
     imageUrl: "/file.svg",
-    linkUrl: "/one",
+    linkUrl: "/login",
   },
   {
     id: 2,
     title: "여름 세일 시작!",
     imageUrl: "/globe.svg",
-    linkUrl: "/two",
+    linkUrl: "/signup",
   },
   {
     id: 3,
     title: "가을엔 독서",
     imageUrl: "/next.svg",
-    linkUrl: "/three",
+    linkUrl: "/",
   },
   {
     id: 4,
     title: "겨울 한정 배너",
     imageUrl: "/window.svg",
-    linkUrl: "/four",
+    linkUrl: "/notice",
   },
 ];
 
@@ -59,7 +59,7 @@ const BannerPage = () => {
   // useEffect(() => {
   //   const getBanners = async () => {
   //     try {
-  //       const res = await api.get("/auth/banner");
+  //       const res = await api.get("/banner");
   //       setBanners(res.data);
   //     } catch (err) {
   //       console.error("배너 불러오기 실패", err);
@@ -77,7 +77,7 @@ const BannerPage = () => {
     if (confirm) {
       // 공지사항 삭제 요청 (해당 id만)
       try {
-        const response = await api.delete(`/auth/banner/${id}`);
+        const response = await api.delete(`/banner/${id}`);
 
         if (response.status === 200) {
           router.reload();
@@ -116,7 +116,7 @@ const BannerPage = () => {
       title: "URL",
       dataIndex: "linkUrl",
       render: (link: string) => (
-        <Link href={link} className="banner-linkUrl">
+        <Link href={`http://localhost:3000${link}`} className="banner-linkUrl">
           {link}
         </Link>
       ),
@@ -125,7 +125,6 @@ const BannerPage = () => {
       title: "관리",
       render: (banner: any) => (
         <div className="banner-management">
-          {/* <button>수정</button> */}
           <Button
             onClick={(e) => {
               handleDelete(e, banner.id); //행(row)에 해당하는 고유한 id
@@ -152,6 +151,10 @@ const BannerPage = () => {
         rowKey="id"
         pagination={false}
         bordered
+        locale={{
+          emptyText:
+            "등록된 배너가 없습니다. 상단의 [등록] 버튼을 눌러 추가해보세요.",
+        }}
       />
     </BannerPageStyled>
   );
