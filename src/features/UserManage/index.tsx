@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 const UserManage = () => {
   const [userOrder, setUserOrder] = useState("DESC");
   const [notiOrder, setNotiOrder] = useState("DESC");
-  const [sortKey, setSortKey] = useState("createdAt"); // 기본 정렬 키를 'createdAt'으로 변경
+  const [sortKey, setSortKey] = useState("created_at"); // 기본 정렬 키를 'created_at'으로 변경
   const [users, setUsers] = useState<any[]>([]);
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -21,6 +21,8 @@ const UserManage = () => {
       // 유저 정보를 불러오는 axios 요청
       const res = await api.get("/users");
       const data = res.data;
+
+      console.log(data);
 
       const mapped = data.map((x: any) => ({
         key: x.id,
@@ -35,7 +37,7 @@ const UserManage = () => {
           ) : (
             <div className="run">사용</div>
           ),
-        createdAt: x.joinedDate || x.createdAt, // 가입 날짜 필드명 확인
+        created_at: x.joinedDate || x.created_at, // 가입 날짜 필드명 확인
         popcornCount: x.popcornCount || 0, // 팝콘 수 필드명 확인
       }));
 
@@ -54,11 +56,11 @@ const UserManage = () => {
   const sortUsers = () => {
     let sorted = [...users];
 
-    if (sortKey === "createdAt") {
+    if (sortKey === "created_at") {
       sorted.sort((a, b) =>
         userOrder === "DESC"
-          ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          : new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          ? new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          : new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       );
     } else if (sortKey === "noti") {
       sorted.sort((a, b) =>
@@ -90,7 +92,7 @@ const UserManage = () => {
       전화번호: user.phone,
       신고횟수: user.noti,
       팝콘수: user.popcornCount,
-      가입일: user.createdAt,
+      가입일: user.created_at,
       상태: user.status?.props?.children,
     }));
 
@@ -214,7 +216,7 @@ const UserManage = () => {
         ) : (
           <div className="run">사용</div>
         ),
-      createdAt: x?.createdAt, // 가입 날짜 포함
+      created_at: x?.created_at, // 가입 날짜 포함
       popcornCount: x?.popcornCount, // 팝콘 수 포함
     }));
   }, [sortedUsers]);
@@ -251,7 +253,7 @@ const UserManage = () => {
           options={option1}
           onChange={(e) => {
             setUserOrder(e);
-            setSortKey("createdAt"); // 최신순/오래된순 정렬 기준을 가입일로 변경
+            setSortKey("created_at"); // 최신순/오래된순 정렬 기준을 가입일로 변경
           }}
         />
         <Select
