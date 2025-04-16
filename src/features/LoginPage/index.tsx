@@ -55,7 +55,7 @@ const LoginPage = () => {
       // 성공적으로 로그인한 경우 대시보드로 이동
       if (response.status === 200 || response.status === 201) {
         setErrorMessage("");
-        localStorage.setItem("isAdminLoggedIn", "true");
+        sessionStorage.setItem("isAdminLoggedIn", "true");
 
         // ✅ 응답 데이터 확인 및 상태 관리 (예시)
         console.log("로그인 성공 응답:", response.data);

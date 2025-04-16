@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const isAuth = localStorage.getItem("isAdminLoggedIn") === "true";
+    const isAuth = sessionStorage.getItem("isAdminLoggedIn") === "true";
 
     if (!isAuth && router.pathname !== "/login") {
       router.replace("/login");
