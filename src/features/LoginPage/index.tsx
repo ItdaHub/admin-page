@@ -47,6 +47,9 @@ const LoginPage = () => {
       if (response.data.success) {
         setErrorMessage("");
 
+        // 로그인 상태 저장
+        localStorage.setItem("isAdminLoggedIn", "true");
+
         // 로그인 성공 후 대시보드로 이동
         router.push("/dashboard");
       } else {

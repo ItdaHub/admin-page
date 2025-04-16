@@ -4,16 +4,36 @@ import Template from "@/layouts/Template";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { Spin } from "antd";
+import "antd/dist/reset.css";
+
+const NO_HEADER_ROUTES = ["/login"];
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   const [notPc, setNotPc] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const isAuth = localStorage.getItem("isAdminLoggedIn") === "true";
+
+    if (!isAuth && router.pathname !== "/login") {
+      router.replace("/login");
+      return;
+    }
+
+    setIsLoggedIn(isAuth);
+    setIsReady(true);
+  }, [router.pathname]);
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 1200) {
         // 이거 true로 바꿔야함
-        setNotPc(false);
+        setNotPc(true);
       } else {
         setNotPc(false);
       }
@@ -31,6 +51,21 @@ export default function App({ Component, pageProps }: AppProps) {
     };
   }, []);
 
+  if (!isReady) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Spin size="large" tip="로딩 중..." />
+      </div>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -39,6 +74,8 @@ export default function App({ Component, pageProps }: AppProps) {
 
       {notPc ? (
         <NotPc />
+      ) : NO_HEADER_ROUTES.includes(router.pathname) ? (
+        <Component {...pageProps} />
       ) : (
         <>
           <Header />
