@@ -10,16 +10,16 @@ import { useRouter } from "next/router";
 const UserManage = () => {
   const [userOrder, setUserOrder] = useState("DESC");
   const [notiOrder, setNotiOrder] = useState("DESC");
-  const [potinOrder, setPointOrder] = useState("DESC");
   const [sortKey, setSortKey] = useState("createdAt"); // 기본 정렬 키를 'createdAt'으로 변경
   const [users, setUsers] = useState<any[]>([]);
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const router = useRouter();
 
   const getUserList = async () => {
     try {
-      // ✅ 유저 정보를 불러오는 axios 요청 (백엔드 API 엔드포인트에 맞춰 수정)
-      const res = await api.get("/users"); // 예시: "/users" 또는 "/manage/users"
+      // 유저 정보를 불러오는 axios 요청
+      const res = await api.get("/users");
       const data = res.data;
 
       const mapped = data.map((x: any) => ({
@@ -64,12 +64,6 @@ const UserManage = () => {
       sorted.sort((a, b) =>
         notiOrder === "DESC" ? b.noti - a.noti : a.noti - b.noti
       );
-    } else if (sortKey === "popcornCount") {
-      sorted.sort((a, b) =>
-        potinOrder === "DESC"
-          ? b.popcornCount - a.popcornCount
-          : a.popcornCount - b.popcornCount
-      );
     } else if (sortKey === "user") {
       sorted.sort((a, b) => {
         const nameA = a.user.toLowerCase();
@@ -85,7 +79,7 @@ const UserManage = () => {
   // 유저정렬
   useEffect(() => {
     sortUsers();
-  }, [userOrder, notiOrder, potinOrder, sortKey, users]);
+  }, [userOrder, notiOrder, sortKey, users]);
 
   // 엑셀 다운로드
   const handleDownloadExcel = () => {
@@ -111,6 +105,35 @@ const UserManage = () => {
 
     const file = new Blob([excelBuffer], { type: "application/octet-stream" });
     saveAs(file, "회원목록.xlsx");
+  };
+
+  // 회원탈퇴
+  const WithdrawUser = async () => {
+    if (selectedRowKeys.length === 0) {
+      alert("탈퇴시킬 회원을 선택해주세요.");
+      return;
+    }
+
+    try {
+      //선택된 회원들 탈퇴 axios post요청
+      const res = await api.post("/users/withdraw", {
+        userIds: selectedRowKeys,
+      });
+      alert("선택한 회원을 탈퇴시켰습니다.");
+      getUserList(); // 회원 목록 다시 불러오기
+      setSelectedRowKeys([]); // 선택된 키 초기화
+    } catch (err) {
+      console.error("회원 탈퇴 실패:", err);
+      alert("회원 탈퇴에 실패했습니다. 잠시후 다시 시도해주세요.");
+    }
+  };
+
+  // 테이블 rowSelection 설정
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (keys: React.Key[]) => {
+      setSelectedRowKeys(keys);
+    },
   };
 
   // 컬럼
@@ -204,22 +227,23 @@ const UserManage = () => {
     { value: "DESC", label: "신고 많은순" },
     { value: "ASC", label: "신고 적은순" },
   ];
-  const option3 = [
-    { value: "DESC", label: "팝콘 많은순" },
-    { value: "ASC", label: "팝콘 적은순" },
-  ];
 
   return (
     <UserManageStyled className={clsx("manage-wrap")}>
       <div className="manage-title-box">
         <div className="manage-title">회원 관리</div>
-        <Button
-          onClick={() => {
-            router.push("/memberadd");
-          }}
-        >
-          회원추가
-        </Button>
+        <div>
+          <Button
+            onClick={() => {
+              router.push("/memberadd");
+            }}
+          >
+            회원추가
+          </Button>
+          <Button className="manage-delete-button" onClick={WithdrawUser}>
+            회원탈퇴
+          </Button>
+        </div>
       </div>
       <div className="manage-select-box">
         <Select
@@ -238,21 +262,17 @@ const UserManage = () => {
             setSortKey("noti");
           }}
         />
-        <Select
-          value={potinOrder}
-          options={option3}
-          onChange={(e) => {
-            setPointOrder(e);
-            setSortKey("popcornCount");
-          }}
-        />
       </div>
       <div className="manage-info">
         <div className="manage-total-num">총 {list.length}명</div>
         <Button onClick={handleDownloadExcel}>엑셀</Button>
       </div>
-      <Table columns={col} dataSource={list} rowKey="id" />{" "}
-      {/* rowKey prop 추가 */}
+      <Table
+        rowSelection={rowSelection}
+        columns={col}
+        dataSource={list}
+        rowKey="id"
+      />
     </UserManageStyled>
   );
 };

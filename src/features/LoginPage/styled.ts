@@ -22,7 +22,7 @@ export const LoginPageStyled = styled.div`
       border-radius: 4px;
 
       .login-form {
-        width: 80%;
+        width: 50%;
 
         .login-errorMessage {
           color: rgb(230, 73, 56);

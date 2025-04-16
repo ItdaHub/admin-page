@@ -26,5 +26,8 @@ export const UserManageStyled = styled.div`
         margin: 15px 0 2px 5px;
       }
     }
+    .manage-delete-button {
+      margin-left: 3px;
+    }
   }
 `;
