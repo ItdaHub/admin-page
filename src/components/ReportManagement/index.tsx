@@ -1,76 +1,96 @@
-import { Table } from "antd";
+import { Button, Select, Table, message } from "antd";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReportManageStyled } from "./styled";
 import clsx from "clsx";
+import TitleCompo from "../TitleCompo";
+import api from "@/utill/api";
+import type { ColumnsType } from "antd/es/table";
 
 interface ReportData {
   id: number;
-  title: string;
   content: string;
-  reporter: string;
-  date: string;
+  reason: string;
+  reporterId: string;
+  created_at: string;
 }
 
 interface Props {
   data: ReportData[];
-  type: "comment" | "novel";
+  target_type: "comment" | "chapter";
 }
 
-const ReportManagement = ({ data, type }: Props) => {
+const ReportManagement = ({ data, target_type }: Props) => {
   const router = useRouter();
 
-  const [report, setReport] = useState([]);
+  const [report, setReport] = useState<ReportData[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
+  const [order, setOrder] = useState<"DESC" | "ASC">("DESC");
+
+  // 신고 데이터
+  useEffect(() => {
+    setReport(data);
+    console.log(data, "렌더링?");
+  }, [data]);
+
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
-  const handleContentClick = (report: ReportData) => {
-    router.push(`/reports/${type}/${report.id}`);
+  // 신고 목록 선택 삭제
+  const handleDelete = async () => {
+    try {
+      await Promise.all(
+        selectedRowKeys.map((id) => api.delete(`/reports/${id}`))
+      );
+      const filtered = report.filter(
+        (item: ReportData) => !selectedRowKeys.includes(item.id)
+      );
+      message.success("선택된 신고가 삭제되었습니다.");
+      setReport(filtered);
+      setSelectedRowKeys([]);
+    } catch (err) {
+      console.error("삭제 중 에러 발생:", err);
+      message.error("삭제 중 오류가 발생했습니다.");
+    }
   };
 
-  const columns = [
-    { key: "id", title: "번호", dataIndex: "id" },
-    { key: "title", title: "제목", dataIndex: "title" },
+  const handleDetailClick = (id: number) => {
+    router.push(`/reports/${target_type}/${id}`);
+  };
+
+  const columns: ColumnsType<ReportData> = [
+    { title: "번호", dataIndex: "id", key: "id" },
+    { title: "신고 이유", dataIndex: "reason", key: "reason" },
     {
-      key: "content",
       title: "신고 내용",
       dataIndex: "content",
-      render: (text: string, record: ReportData) => (
+      key: "content",
+      render: (_: any, record: ReportData) => (
         <span
-          onClick={() => handleContentClick(record)}
+          onClick={() => handleDetailClick(record.id)}
           style={{ cursor: "pointer", color: "#1890ff" }}
         >
-          {text.length > 10 ? text.slice(0, 10) + "..." : text}
+          {record.content}
         </span>
       ),
     },
-    { key: "reporter", title: "신고자", dataIndex: "reporter" },
-    { key: "date", title: "신고 날짜", dataIndex: "date" },
+    {
+      title: "신고자",
+      dataIndex: "reporterId",
+      key: "reporterId",
+    },
+    {
+      title: "신고일",
+      dataIndex: "created_at",
+      key: "created_at",
+      sorter: (a: ReportData, b: ReportData) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    },
   ];
 
-  // useEffect(() => {
-  //   // API 호출
-  //   const getReports = async () => {
-  //     try {
-  //       const res = await api.get(`/reports/${type}`); // ←  URL 변경해야 함
-  //       // key 값이 없는 경우, index를 key로 추가
-  //       const datas = res.data.map((item: any, index: number) => ({
-  //         ...item,
-  //         key: item.id || index + 1,
-  //       }));
-  //       setReport(datas);
-  //     } catch (err) {
-  //       console.error("신고 데이터를 불러오는 중 에러 발생:", err);
-  //     }
-  //   };
-
-  //   getReports();
-  // }, []);
-
+  // 테이블 rowSelection 설정
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
@@ -80,18 +100,56 @@ const ReportManagement = ({ data, type }: Props) => {
       Table.SELECTION_NONE,
     ],
   };
+  useEffect(() => {
+    const sorted = [...data].sort((a, b) =>
+      order === "DESC"
+        ? new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        : new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    );
+    setReport(sorted);
+  }, [data, order]);
+
+  // 정렬 옵션
+  const sortOptions = [
+    { value: "DESC", label: "최신순" },
+    { value: "ASC", label: "오래된순" },
+  ];
 
   return (
     <ReportManageStyled className={clsx("report-wrap")}>
-      <div className="report-title">신고 관리</div>
-      <div className="manage-info">
-        <div className="manage-total-num">총 {data.length}건</div>
+      <div className="report-head">
+        <TitleCompo title="신고 관리" />
+        <Button
+          type="primary"
+          onClick={handleDelete}
+          disabled={!selectedRowKeys.length}
+        >
+          선택 삭제
+        </Button>
+      </div>
+      <div
+        className="manage-info"
+        style={{
+          display: "flex",
+          alignContent: "center",
+          flexWrap: "nowrap",
+          gap: 10,
+        }}
+      >
+        <div className="manage-total-num">총 {report.length}건</div>
+        <Select
+          value={order}
+          options={sortOptions}
+          style={{ width: 120 }}
+          onChange={(value) => setOrder(value)}
+        />
       </div>
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={report}
         rowSelection={rowSelection}
         rowKey="id"
+        pagination={{ pageSize: 10 }}
       />
     </ReportManageStyled>
   );

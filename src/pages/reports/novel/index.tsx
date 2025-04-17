@@ -1,23 +1,47 @@
 import ReportManagement from "@/components/ReportManagement";
 
+interface ReportData {
+  id: number;
+  target_type: string;
+  target_id: number;
+  reason?: string;
+  created_at?: string;
+  reporterId?: string;
+}
+
 const sample = [
   {
     id: 1,
-    title: "욕설adfasdfadsf이 있습니다",
-    content: "댓글에 부적절한 단어sdfads가 있어요.",
-    reporter: "나나",
-    date: "2024-11-03",
+    target_type: "comment",
+    target_id: 101,
+    reason: "욕설",
+    created_at: "2024-11-03",
+    reporterId: "user1",
   },
   {
     id: 2,
-    title: "dfsfad 글입니다",
-    content: "지나친 홍보 내용이 포함되어dfsdfa 있어요.",
-    reporter: "바다",
-    date: "2024-11-02",
+    target_type: "chapter",
+    target_id: 202,
+    reason: "홍보",
+    created_at: "2024-11-02",
+    reporterId: "user2",
+  },
+  {
+    id: 3,
+    target_type: "novel",
+    target_id: 303,
+    reason: "부적절한 내용",
+    created_at: "2024-11-01",
+    reporterId: "user3",
   },
 ];
 
-const Reports = () => {
-  return <ReportManagement data={sample} type="novel" />;
+const NovelReports = () => {
+  const filteredData = sample.filter(
+    (report) => report.target_type === "novel"
+  );
+
+  return <ReportManagement data={filteredData} target_type="chapter" />;
 };
-export default Reports;
+
+export default NovelReports;

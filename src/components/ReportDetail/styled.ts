@@ -15,6 +15,8 @@ export const ReportDetailStyled = styled.div`
       font-weight: 600;
       margin-bottom: 24px;
       color: #111;
+      display: flex;
+      justify-content: center;
     }
 
     .row {

@@ -5,15 +5,16 @@ import router from "next/router";
 
 interface ReportData {
   id: number;
-  title: string;
+  reason: string;
   content: string;
   reporter: string;
+  userId: number;
   date: string;
 }
 
 interface Props {
   data: ReportData;
-  type: "comment" | "novel";
+  type: "comment" | "chapter";
 }
 
 const ReportDetail = ({ data, type }: Props) => {
@@ -38,13 +39,23 @@ const ReportDetail = ({ data, type }: Props) => {
       </h2>
 
       <div className="row">
-        <div className="label">제목</div>
-        <div className="value">{data.title}</div>
+        <div className="label">신고자 ID</div>
+        <div className="value">{data.id}</div>
       </div>
 
       <div className="row">
-        <div className="label">신고된 소설</div>
-        <div className="value">신고된 소설 제목</div>
+        <div className="label">신고자</div>
+        <div className="value">{data.reporter}</div>
+      </div>
+
+      <div className="row">
+        <div className="label">신고 이유</div>
+        <div className="value">{data.reason}</div>
+      </div>
+
+      <div className="row">
+        <div className="label">신고된 댓글/소설</div>
+        <div className="value">신고된 댓글/소설</div>
       </div>
 
       <div className="row">
@@ -53,8 +64,8 @@ const ReportDetail = ({ data, type }: Props) => {
       </div>
 
       <div className="row">
-        <div className="label">신고자</div>
-        <div className="value">{data.reporter}</div>
+        <div className="label">작성자</div>
+        <div className="value">{data.userId}</div>
       </div>
 
       <div className="row">
