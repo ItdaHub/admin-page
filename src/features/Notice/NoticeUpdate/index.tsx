@@ -1,93 +1,89 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Input, Button, Form } from "antd";
+import { Input, Button, Form, message } from "antd";
+import api from "@/utill/api"; // api 호출을 위한 axios 인스턴스
 
 interface Notice {
-  id: string;
-  number: number;
+  id: number;
   title: string;
-  author: string;
-  date: string;
   content: string;
 }
 
-const dummyData: Notice[] = [
-  {
-    id: "1",
-    number: 1,
-    title: "2024년도 출판 안내",
-    author: "권예은",
-    date: "2018.05.04 14:16",
-    content: "2024년 출판 계획에 대한 안내입니다...",
-  },
-  {
-    id: "2",
-    number: 2,
-    title: "4월 서비스점검 작업 안내",
-    author: "박정은",
-    date: "2018.04.20 15:31",
-    content: "4월 중 서비스 점검이 예정되어 있습니다...",
-  },
-  {
-    id: "3",
-    number: 3,
-    title: "웹메일 장애복구와 사과의 말씀",
-    author: "손은비",
-    date: "2018.05.04 14:40",
-    content: "웹메일 장애에 대해 사과드리며 복구를 완료했습니다...",
-  },
-];
-
-const NoticeUpdate = () => {
+const NoticeUpdatePage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [form] = Form.useForm();
-  const [notice, setNotice] = useState<Notice | null>(null);
+  const [form] = Form.useForm<Notice>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (id) {
-      const found = dummyData.find((item) => item.id === id);
-      if (found) {
-        setNotice(found);
-        form.setFieldsValue(found);
+    const fetchNotice = async () => {
+      if (!id) return;
+      setLoading(true);
+      try {
+        const res = await api.get<Notice>(`/announcement/${id}`);
+        form.setFieldsValue(res.data);
+      } catch (error: any) {
+        console.error("공지사항 불러오기 실패:", error);
+        message.error("공지사항 정보를 불러오는 데 실패했습니다.");
+        router.push("/notice-manage");
+      } finally {
+        setLoading(false);
       }
-    }
-  }, [id, form]);
+    };
 
-  const onFinish = (values: any) => {
-    console.log("수정된 값:", values);
-    alert("수정이 완료되었습니다.");
-    router.push(`/noticedetail/${id}`);
+    fetchNotice();
+  }, [router, id, form]);
+
+  const onFinish = async (values: Notice) => {
+    try {
+      const response = await api.put(`/announcement/${id}`, {
+        title: values.title,
+        content: values.content,
+      });
+      if (response.status === 200) {
+        message.success("공지사항이 성공적으로 수정되었습니다.");
+        router.push(`/noticedetail/${id}`);
+      } else {
+        message.error("공지사항 수정에 실패했습니다.");
+      }
+    } catch (error: any) {
+      console.error("공지사항 수정 실패:", error);
+      message.error("공지사항 수정 중 오류가 발생했습니다.");
+    }
   };
 
-  if (!notice) return <div>공지사항을 불러오는 중...</div>;
+  if (loading) {
+    return <div>공지사항 정보를 불러오는 중...</div>;
+  }
 
   return (
     <div style={{ padding: "2rem" }}>
       <h1>공지사항 수정</h1>
       <Form form={form} layout="vertical" onFinish={onFinish}>
-        <Form.Item name="title" label="제목" rules={[{ required: true }]}>
+        <Form.Item
+          name="title"
+          label="제목"
+          rules={[{ required: true, message: "제목을 입력해주세요!" }]}
+        >
           <Input />
         </Form.Item>
 
-        <Form.Item name="author" label="작성자" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-
-        <Form.Item name="content" label="내용" rules={[{ required: true }]}>
+        <Form.Item
+          name="content"
+          label="내용"
+          rules={[{ required: true, message: "내용을 입력해주세요!" }]}
+        >
           <Input.TextArea rows={6} />
         </Form.Item>
 
         <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            // onClick={() => router.push(`/noticedetail/${id}`)}
-            style={{ marginRight: 8 }}
-          >
+          <Button type="primary" htmlType="submit" style={{ marginRight: 8 }}>
             저장
           </Button>
-          <Button onClick={() => router.back()} style={{ marginLeft: 8 }}>
+          <Button
+            onClick={() => router.push("/notice-manage")}
+            style={{ marginLeft: 8 }}
+          >
             취소
           </Button>
         </Form.Item>
@@ -96,4 +92,4 @@ const NoticeUpdate = () => {
   );
 };
 
-export default NoticeUpdate;
+export default NoticeUpdatePage;

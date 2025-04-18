@@ -10,15 +10,14 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 enum Priority {
-  URGENT = "긴급",
-  IMPORTANT = "중요",
-  NORMAL = "기본",
+  URGENT = "urgent",
+  NORMAL = "normal",
 }
 
 interface NoticeForm {
   title: string;
   content: string;
-  priorityLabel: Priority;
+  priority: Priority;
 }
 
 const validate = (values: any) => {
@@ -39,7 +38,7 @@ const NewNoticeManage = () => {
     initialValues: {
       title: "",
       content: "",
-      priorityLabel: Priority.NORMAL,
+      priority: Priority.NORMAL,
     },
     validate,
     onSubmit: async (values, { setSubmitting }) => {
@@ -50,10 +49,10 @@ const NewNoticeManage = () => {
           return;
         }
         // 공지사항 새 글 등록 axios 요청
-        const res = await api.post("/adminnotification/register", {
+        const res = await api.post("/announcement/register", {
           title: values.title,
           content: values.content,
-          priorityLabel: values.priorityLabel,
+          priority: values.priority,
         });
         console.log(res, "왔니?");
         message.success("공지사항이 등록되었습니다.");
@@ -85,12 +84,11 @@ const NewNoticeManage = () => {
         <div className="form-item">
           <label className="form-label">우선순위</label>
           <Select
-            value={formik.values.priorityLabel}
-            onChange={(value) => formik.setFieldValue("priorityLabel", value)}
+            value={formik.values.priority}
+            onChange={(value) => formik.setFieldValue("priority", value)}
           >
-            <Option value={Priority.NORMAL}>{Priority.NORMAL}</Option>
-            <Option value={Priority.IMPORTANT}>{Priority.IMPORTANT}</Option>
-            <Option value={Priority.URGENT}>{Priority.URGENT}</Option>
+            <Option value={Priority.NORMAL}>기본</Option>
+            <Option value={Priority.URGENT}>긴급</Option>
           </Select>
         </div>
 
@@ -102,7 +100,6 @@ const NewNoticeManage = () => {
             onChange={formik.handleChange}
             placeholder="제목을 입력하세요."
           />
-          {/* 조건부 렌더링으로 에러 출력 */}
           {formik.touched.title && formik.errors.title && (
             <div className="form-error">{formik.errors.title}</div>
           )}
@@ -118,7 +115,6 @@ const NewNoticeManage = () => {
             rows={10}
             placeholder="내용을 입력하세요."
           />
-          {/* 조건부 렌더링으로 에러 출력 */}
           {formik.touched.content && formik.errors.content && (
             <div className="form-error">{formik.errors.content}</div>
           )}

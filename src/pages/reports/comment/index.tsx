@@ -11,7 +11,7 @@ const CommentReports = () => {
       const filtered = res.data.filter(
         (report: any) => report.target_type === "comment"
       );
-      setData(filtered); // target_type이 "comment"인 것만 저장
+      setData(filtered);
     };
     getReports();
   }, []);
