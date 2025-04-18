@@ -25,13 +25,11 @@ const ReportManagement = ({ data, target_type }: Props) => {
 
   const [report, setReport] = useState<ReportData[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-
   const [order, setOrder] = useState<"DESC" | "ASC">("DESC");
 
   // 신고 데이터
   useEffect(() => {
     setReport(data);
-    console.log(data, "렌더링?");
   }, [data]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -100,6 +98,8 @@ const ReportManagement = ({ data, target_type }: Props) => {
       Table.SELECTION_NONE,
     ],
   };
+
+  // 정렬 적용
   useEffect(() => {
     const sorted = [...data].sort((a, b) =>
       order === "DESC"
@@ -121,18 +121,19 @@ const ReportManagement = ({ data, target_type }: Props) => {
         <TitleCompo title="신고 관리" />
         <div style={{ display: "flex", gap: 10 }}>
           <Button type="primary" disabled={!selectedRowKeys.length}>
-            선택 추가
+            신고 추가
           </Button>
           <Button
             type="primary"
             onClick={handleDelete}
             disabled={!selectedRowKeys.length}
           >
-            선택 삭제
+            신고 삭제
           </Button>
         </div>
       </div>
       <div className="manage-info">
+        <div>{target_type === "comment" ? "댓글" : "소설"}</div>
         <div className="manage-total-num">총 {report.length}건</div>
         <Select
           value={order}
