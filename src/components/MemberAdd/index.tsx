@@ -56,7 +56,26 @@ const MemberAdd = ({ id }: { id?: number }) => {
         return;
       }
       console.log("뭐가 들었나", values);
+
       try {
+        const birthYear = parseInt(values.birthYear, 10);
+        let ageGroup;
+
+        if (!isNaN(birthYear)) {
+          const currentYear = new Date().getFullYear();
+          const age = currentYear - birthYear + 1;
+
+          if (age >= 10 && age <= 19) {
+            ageGroup = 10;
+          } else if (age >= 20 && age <= 29) {
+            ageGroup = 20;
+          } else if (age >= 30 && age <= 39) {
+            ageGroup = 30;
+          } else if (age >= 40) {
+            ageGroup = 40;
+          }
+        }
+
         const registerData = {
           email: values.email,
           name: values.name,
@@ -65,7 +84,7 @@ const MemberAdd = ({ id }: { id?: number }) => {
           birthYear: values.birthYear,
           phone: values.phone,
           type: "local", // LoginType에 'local'이 있다면 설정, 백엔드와 협의 필요
-          // age_group: values.age_group, // 필요한 경우 추가
+          age_group: ageGroup,
         };
 
         if (id) {
