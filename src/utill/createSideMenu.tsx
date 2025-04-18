@@ -62,8 +62,4 @@ export const sidebarMenus = createSidebarMenus([
     key: "/exhibit",
     label: "출품 관리",
   },
-  {
-    key: "/profit",
-    label: "수익 관리",
-  },
 ]);

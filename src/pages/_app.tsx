@@ -52,18 +52,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   if (!isReady) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <Spin size="large" tip="로딩 중..." />
-      </div>
-    );
+    return <Spin size="large" tip="로딩 중..." fullscreen />;
   }
 
   return (
