@@ -13,7 +13,9 @@ const ExhibitPage = () => {
   const getExhibitList = async () => {
     try {
       // 완결된 소설 axios 요청
-      const res = await api.get("/complete");
+      // ✅ 올바른 경로
+      const res = await api.get("/admin/complete");
+
       const data = res.data;
 
       console.log("이거당", data);

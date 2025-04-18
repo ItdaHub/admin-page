@@ -1,10 +1,10 @@
 import { DashStyled } from "./styled";
-import VisitorChart from "@/components/VisitorChart";
+import RankChart from "@/components/RankChart";
 
 const DashBoard = () => {
   return (
     <DashStyled>
-      <VisitorChart />
+      <RankChart />
     </DashStyled>
   );
 };
