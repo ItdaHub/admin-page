@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import api from "@/utill/api";
-import { Button, Result, Spin } from "antd";
+import { Button, Result, Spin, Table } from "antd";
 import { NovelDetailStyled } from "./styled";
 import clsx from "clsx";
 
@@ -10,7 +10,7 @@ interface Chapter {
   chapterNumber: string;
   content: string;
   reportCount: number;
-  writerName: string;
+  authorNickname: string;
 }
 
 interface NovelDetail {
@@ -31,14 +31,12 @@ const NovelDetail = ({ novelId }: { novelId: number }) => {
     }
   }, [novelId]);
 
-  // ✅ 관리자용 소설 상세 조회 API 호출
   const fetchNovelDetail = async (novelId: number) => {
     setLoading(true);
     setError(null);
     try {
       const response = await api.get(`/admin/novel/${novelId}`);
       setNovelDetail(response.data);
-      console.log("aaaaaaaaaaaaaaa", response.data);
     } catch (error: any) {
       setError(`소설 상세 정보를 불러오는데 실패했습니다: ${error.message}`);
     } finally {
@@ -46,7 +44,6 @@ const NovelDetail = ({ novelId }: { novelId: number }) => {
     }
   };
 
-  // ✅ 관리자용 소설 삭제
   const handleDeleteNovel = async () => {
     if (novelId) {
       try {
@@ -59,7 +56,6 @@ const NovelDetail = ({ novelId }: { novelId: number }) => {
     }
   };
 
-  // ✅ 관리자용 소설 출품
   const handlePublishNovel = async () => {
     if (novelId) {
       try {
@@ -101,22 +97,42 @@ const NovelDetail = ({ novelId }: { novelId: number }) => {
     return <Result status="warning" title="소설 정보를 찾을 수 없습니다." />;
   }
 
+  // 테이블 컬럼 정의
+  const columns = [
+    {
+      title: "회차",
+      dataIndex: "chapterNumber",
+      key: "chapterNumber",
+      render: (text: string) => `${text} 화`,
+    },
+    {
+      title: "내용",
+      dataIndex: "content",
+      key: "content",
+      render: (text: string) => <div className="detail-content">{text}</div>,
+    },
+    {
+      title: "작가",
+      dataIndex: "authorNickname",
+      key: "authorNickname",
+    },
+    {
+      title: "신고 횟수",
+      dataIndex: "reportCount",
+      key: "reportCount",
+    },
+  ];
+
   return (
     <NovelDetailStyled className={clsx("detail-wrap")}>
       <h3>{novelDetail.title}</h3>
-      <ul>
-        {novelDetail.chapters.map((chapter) => (
-          <li key={chapter.id}>
-            <div className="detail-box">
-              <div>{chapter.chapterNumber} 화</div>
-              <div className="detail-content">{chapter.content}</div>
-              <div>{chapter.writerName}</div>
-              <div>신고 횟수: {chapter.reportCount}</div>
-            </div>
-          </li>
-        ))}
-      </ul>
-      <div className="detail-button">
+      <Table
+        dataSource={novelDetail.chapters}
+        columns={columns}
+        rowKey="id"
+        pagination={false}
+      />
+      <div className="detail-button" style={{ marginTop: 16 }}>
         <Button className="detail-publish-button" onClick={handleDeleteNovel}>
           삭제하기
         </Button>
