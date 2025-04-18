@@ -119,23 +119,20 @@ const ReportManagement = ({ data, target_type }: Props) => {
     <ReportManageStyled className={clsx("report-wrap")}>
       <div className="report-head">
         <TitleCompo title="신고 관리" />
-        <Button
-          type="primary"
-          onClick={handleDelete}
-          disabled={!selectedRowKeys.length}
-        >
-          선택 삭제
-        </Button>
+        <div style={{ display: "flex", gap: 10 }}>
+          <Button type="primary" disabled={!selectedRowKeys.length}>
+            선택 추가
+          </Button>
+          <Button
+            type="primary"
+            onClick={handleDelete}
+            disabled={!selectedRowKeys.length}
+          >
+            선택 삭제
+          </Button>
+        </div>
       </div>
-      <div
-        className="manage-info"
-        style={{
-          display: "flex",
-          alignContent: "center",
-          flexWrap: "nowrap",
-          gap: 10,
-        }}
-      >
+      <div className="manage-info">
         <div className="manage-total-num">총 {report.length}건</div>
         <Select
           value={order}

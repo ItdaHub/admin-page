@@ -45,15 +45,17 @@ const NewNoticeManage = () => {
     onSubmit: async (values, { setSubmitting }) => {
       console.log("제출됨:", values);
       try {
-        if (values.title || values.content === "") {
+        if (!values.title || !values.content) {
           setSubmitting(false);
           return;
         }
-        const res = await api.post("/auth/notice", {
+        // 공지사항 새 글 등록 axios 요청
+        const res = await api.post("/adminnotification/register", {
           title: values.title,
           content: values.content,
           priorityLabel: values.priorityLabel,
         });
+        console.log(res, "왔니?");
         message.success("공지사항이 등록되었습니다.");
         router.push("/notice");
       } catch (error) {

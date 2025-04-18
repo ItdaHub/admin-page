@@ -8,23 +8,24 @@ interface ReportData {
   reason: string;
   content: string;
   reporter: string;
-  userId: number;
   date: string;
 }
 
 interface Props {
   data: ReportData;
-  type: "comment" | "chapter";
+  target_type: "comment" | "chapter";
 }
 
-const ReportDetail = ({ data, type }: Props) => {
+const ReportDetail = ({ data, target_type }: Props) => {
   const handleDelete = async () => {
     const confirm = window.confirm("정말 삭제하시겠습니까?");
     if (!confirm) return;
 
     try {
       await api.delete(`/reports/comment/${data.id}`); // ← id 필요
-      alert(`${type === "comment" ? "댓글" : "소설"} 신고가 삭제되었습니다.`);
+      alert(
+        `${target_type === "comment" ? "댓글" : "소설"} 신고가 삭제되었습니다.`
+      );
       router.push("/reports");
     } catch (error) {
       console.error("삭제 실패", error);
@@ -35,7 +36,7 @@ const ReportDetail = ({ data, type }: Props) => {
   return (
     <ReportDetailStyled className={clsx("reportdetail-wrap")}>
       <h2 className="header">
-        {type === "comment" ? "댓글" : "소설"} 신고 상세
+        {target_type === "comment" ? "댓글" : "소설"} 신고 상세
       </h2>
 
       <div className="row">
@@ -63,10 +64,10 @@ const ReportDetail = ({ data, type }: Props) => {
         <div className="value">{data.content}</div>
       </div>
 
-      <div className="row">
+      {/* <div className="row">
         <div className="label">작성자</div>
         <div className="value">{data.userId}</div>
-      </div>
+      </div> */}
 
       <div className="row">
         <div className="label">신고 날짜</div>

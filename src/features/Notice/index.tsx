@@ -1,6 +1,6 @@
 // pages/notice-manage.tsx
 import { useState } from "react";
-import { Table, Button } from "antd";
+import { Table, Button, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { NoticeStyled } from "./styled";
@@ -14,7 +14,7 @@ interface Notice {
   number: number;
   title: string;
   author: string;
-  date: string;
+  created_at: string;
   content: string;
 }
 
@@ -24,7 +24,7 @@ const data: Notice[] = [
     number: 1,
     title: "2024년도 출판 안내",
     author: "권예은",
-    date: "2018.05.04 14:16",
+    created_at: "2018.05.04 14:16",
     content: "2024년 출판 계획에 대한 안내입니다...",
   },
   {
@@ -32,7 +32,7 @@ const data: Notice[] = [
     number: 2,
     title: "4월 서비스점검 작업 안내",
     author: "박정은",
-    date: "2018.04.20 15:31",
+    created_at: "2018.04.20 15:31",
     content: "4월 중 서비스 점검이 예정되어 있습니다...",
   },
   {
@@ -40,7 +40,7 @@ const data: Notice[] = [
     number: 3,
     title: "웹메일 장애복구와 사과의 말씀",
     author: "손은비",
-    date: "2018.05.04 14:40",
+    created_at: "2018.05.04 14:40",
     content: "웹메일 장애에 대해 사과드리며 복구를 완료했습니다...",
   },
 ];
@@ -48,7 +48,21 @@ const data: Notice[] = [
 const NoticeManage = () => {
   const router = useRouter();
 
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]); // 선택한 행
+
+  const [noti, setNoti] = useState<any[]>([]); // 불러온 공지사항
+
+  // 공지사항 불러오는 axios 요청
+  const getNotiList = async () => {
+    try {
+      const res = await api.get("/adminnotification");
+      const data = res.data;
+
+      setNoti(data);
+    } catch (err) {
+      console.error("공지사항 불러오기 실패", err);
+    }
+  };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
@@ -73,7 +87,7 @@ const NoticeManage = () => {
     if (confirm) {
       // 공지사항 삭제 요청 (해당 id만)
       try {
-        const response = await api.delete(`/auth/notifications/${id}`);
+        const response = await api.delete(`/adminnotification/${id}`);
 
         if (response.status === 200) {
           router.reload();
@@ -84,6 +98,26 @@ const NoticeManage = () => {
         console.error("삭제 중 오류 발생:", error);
         alert("오류가 발생했습니다. 다시 시도해주세요.");
       }
+    }
+  };
+
+  // 선택한 공지사항 삭제
+  const selectDelete = async () => {
+    if (selectedRowKeys.length === 0) {
+      alert("삭제할 회원을 선택해주세요.");
+      return;
+    }
+
+    try {
+      await api.delete("/adminnotification/delete", {
+        data: { items: selectedRowKeys },
+      });
+      alert("선택한 공지사항을 완전히 삭제했습니다.");
+      //  여기에 공지사항 다시 불러오기
+      setSelectedRowKeys([]); // 선택 초기화
+    } catch (err) {
+      console.error("공지사항 삭제 실패:", err);
+      alert("공지사항 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.");
     }
   };
 
@@ -186,14 +220,14 @@ const NoticeManage = () => {
               try {
                 await Promise.all(
                   selectedRowKeys.map((id) =>
-                    api.delete(`/auth/notifications/${id}`)
+                    api.delete(`/adminnotification/${id}`)
                   )
                 );
-                alert("삭제 완료");
+                message.success("삭제 완료");
                 router.reload();
               } catch (error) {
                 console.error(error);
-                alert("삭제 중 오류 발생");
+                message.error("삭제 중 오류 발생");
               }
             }
           }}

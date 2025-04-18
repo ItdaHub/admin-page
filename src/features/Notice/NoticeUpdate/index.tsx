@@ -1,4 +1,3 @@
-// pages/noticeEdit/[id].tsx
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Input, Button, Form } from "antd";
