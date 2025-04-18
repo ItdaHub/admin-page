@@ -30,6 +30,7 @@ const ReportManagement = ({ data, target_type }: Props) => {
   // 신고 데이터
   useEffect(() => {
     setReport(data);
+    console.log("받아온 신고 데이터 (ReportManagement):", data);
   }, [data]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {

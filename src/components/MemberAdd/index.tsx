@@ -57,14 +57,25 @@ const MemberAdd = ({ id }: { id?: number }) => {
       }
       console.log("뭐가 들었나", values);
       try {
+        const registerData = {
+          email: values.email,
+          name: values.name,
+          nickname: values.nickname,
+          password: values.password,
+          birthYear: values.birthYear,
+          phone: values.phone,
+          type: "local", // LoginType에 'local'이 있다면 설정, 백엔드와 협의 필요
+          // age_group: values.age_group, // 필요한 경우 추가
+        };
+
         if (id) {
           // 수정
-          await api.put(`/users/${id}`, values);
+          await api.put(`/users/${id}`, values); // 수정 시 모든 값 전송 가능성 있음
           alert("수정 완료");
           router.push("/users/manage");
         } else {
           // 추가
-          await api.post("/auth/register", values);
+          await api.post("/auth/register", registerData); // RegisterDto에 맞춘 데이터 전송
           alert("추가 완료");
           router.push("/users/manage");
         }
