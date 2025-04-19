@@ -19,7 +19,12 @@ interface NovelDetail {
   chapters: Chapter[];
 }
 
-const NovelDetail = ({ novelId }: { novelId: number }) => {
+interface NovelDetailProps {
+  novelId: number;
+  status: string;
+}
+
+const NovelDetail = ({ novelId, status }: NovelDetailProps) => {
   const router = useRouter();
   const [novelDetail, setNovelDetail] = useState<NovelDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -132,11 +137,16 @@ const NovelDetail = ({ novelId }: { novelId: number }) => {
         rowKey="id"
         pagination={false}
       />
-      <div className="detail-button" style={{ marginTop: 16 }}>
+      <div className="detail-button">
         <Button className="detail-publish-button" onClick={handleDeleteNovel}>
           삭제하기
         </Button>
-        <Button onClick={handlePublishNovel}>출품하기</Button>
+        <Button
+          className={status === "completed" ? "" : "submitOn"}
+          onClick={handlePublishNovel}
+        >
+          출품하기
+        </Button>
       </div>
     </NovelDetailStyled>
   );

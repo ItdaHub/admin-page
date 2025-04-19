@@ -13,7 +13,6 @@ const ExhibitPage = () => {
   const getExhibitList = async () => {
     try {
       // 완결된 소설 axios 요청
-      // ✅ 올바른 경로
       const res = await api.get("/admin/complete");
 
       const data = res.data;
@@ -26,8 +25,9 @@ const ExhibitPage = () => {
         title: x.title, //소설 제목
         writer: x.writer, //소설 작가
         date: x.date, //소설 완결된 날짜
+        rawStatus: x.status,
         status:
-          x.status === "ready" ? (
+          x.status === "completed" ? (
             <div className="ready">대기중</div>
           ) : (
             <div className="publish">출품 완료</div>
@@ -77,9 +77,10 @@ const ExhibitPage = () => {
         dataSource={exhibits}
         rowKey="id"
         onRow={(record) => {
+          console.log(record);
           return {
             onClick: () => {
-              router.push(`/novel/${record.id}`);
+              router.push(`/novel/${record.id}/${record.rawStatus}`);
             },
             style: { cursor: "pointer" },
           };

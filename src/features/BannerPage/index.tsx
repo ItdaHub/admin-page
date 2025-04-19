@@ -14,58 +14,23 @@ interface Banner {
   linkUrl: string;
 }
 
-// test data
-const dummyData: Banner[] = [
-  {
-    id: 1,
-    title: "봄맞이 이벤트",
-    imageUrl: "/banner.png",
-    linkUrl: "/login",
-  },
-  {
-    id: 2,
-    title: "여름 세일 시작!",
-    imageUrl: "/banner2.png",
-    linkUrl: "/signup",
-  },
-  {
-    id: 3,
-    title: "가을엔 독서",
-    imageUrl: "/banner3.png",
-    linkUrl: "/",
-  },
-  {
-    id: 4,
-    title: "겨울 한정 배너",
-    imageUrl: "/banner4.png",
-    linkUrl: "/notice",
-  },
-];
-
 const BannerPage = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
-
   const router = useRouter();
 
-  // test
+  // 실제 배너 데이터 요청
   useEffect(() => {
-    // 현재는 더미 데이터 사용
-    setBanners(dummyData);
+    const getBanners = async () => {
+      try {
+        const res = await api.get("/banner"); // 실제 API 호출
+        setBanners(res.data); // 받아온 데이터로 상태 업데이트
+      } catch (err) {
+        console.error("배너 불러오기 실패", err);
+      }
+    };
+
+    getBanners();
   }, []);
-
-  // // axios 요청 (실제데이터)
-  // useEffect(() => {
-  //   const getBanners = async () => {
-  //     try {
-  //       const res = await api.get("/banner");
-  //       setBanners(res.data);
-  //     } catch (err) {
-  //       console.error("배너 불러오기 실패", err);
-  //     }
-  //   };
-
-  //   getBanners();
-  // }, []);
 
   // 한 행 삭제
   const handleDelete = async (e: React.MouseEvent, id: any) => {
@@ -73,7 +38,6 @@ const BannerPage = () => {
     const confirm = window.confirm("배너를 삭제하시겠습니까?");
 
     if (confirm) {
-      // 공지사항 삭제 요청 (해당 id만)
       try {
         const response = await api.delete(`/banner/${id}`);
 
@@ -98,7 +62,12 @@ const BannerPage = () => {
       title: "배너 미리보기",
       dataIndex: "imageUrl",
       render: (_: any, record: Banner) => (
-        <img src={record.imageUrl} alt={record.title} className="banner-img" />
+        <img
+          src={record.imageUrl}
+          alt={record.title}
+          className="banner-img"
+          style={{ width: "150px", height: "auto" }}
+        />
       ),
     },
     {
@@ -115,7 +84,7 @@ const BannerPage = () => {
         <div className="banner-management">
           <Button
             onClick={(e) => {
-              handleDelete(e, banner.id); //행(row)에 해당하는 고유한 id
+              handleDelete(e, banner.id);
             }}
           >
             삭제
@@ -139,23 +108,16 @@ const BannerPage = () => {
         rowKey="id"
         pagination={false}
         bordered
-        onRow={(record) => {
-          // return {
-          //   onClick: () => {
-          //     router.push(`/bannerdetail/${record.id}`);
-          //   },
-          // };
-          return {
-            onClick: () => {
-              router.push({
-                pathname: `/bannerdetail/${record.id}`,
-                query: {
-                  data: JSON.stringify(record), // 더미 데이터 직접 넘기기
-                },
-              });
-            },
-          };
-        }}
+        onRow={(record) => ({
+          onClick: () => {
+            router.push({
+              pathname: `/bannerdetail/${record.id}`,
+              query: {
+                data: JSON.stringify(record),
+              },
+            });
+          },
+        })}
         locale={{
           emptyText:
             "등록된 배너가 없습니다. 상단의 [등록] 버튼을 눌러 추가해보세요.",
