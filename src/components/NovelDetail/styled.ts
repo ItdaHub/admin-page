@@ -19,9 +19,14 @@ export const NovelDetailStyled = styled.div`
 
     .detail-button {
       float: right;
+      margin-top: 16px;
       .detail-publish-button {
         margin-right: 3px;
       }
+    }
+
+    .submitOn {
+      display: none;
     }
   }
 `;

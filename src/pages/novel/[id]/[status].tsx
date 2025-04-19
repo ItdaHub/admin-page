@@ -3,13 +3,9 @@ import { useRouter } from "next/router";
 
 const NovelDetailPage = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id, status } = router.query;
 
-  return (
-    <>
-      <NovelDetail novelId={Number(id)} />
-    </>
-  );
+  return <NovelDetail novelId={Number(id)} status={String(status)} />;
 };
 
 export default NovelDetailPage;

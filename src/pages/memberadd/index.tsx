@@ -1,11 +1,7 @@
 import MemberAdd from "@/components/MemberAdd";
 
 const memberadd = () => {
-  return (
-    <>
-      <MemberAdd />
-    </>
-  );
+  return <MemberAdd />;
 };
 
 export default memberadd;
