@@ -55,7 +55,10 @@ const MemberAdd = ({ id }: { id?: number }) => {
         message.info("이메일과 닉네임 중복검사를 완료해주세요.");
         return;
       }
-      console.log("뭐가 들었나", values);
+      const { passwordCheck, ...filteredValues } = values;
+
+      console.log(values);
+      console.log("뭐가 들었나", filteredValues);
 
       try {
         const birthYear = parseInt(values.birthYear, 10);
@@ -91,7 +94,7 @@ const MemberAdd = ({ id }: { id?: number }) => {
 
         if (id) {
           // 수정
-          await api.put(`/users/${id}`, values); // 수정 시 모든 값 전송 가능성 있음
+          await api.put(`/users/${id}`, filteredValues);
           alert("수정 완료");
           router.push("/users/manage");
         } else {
