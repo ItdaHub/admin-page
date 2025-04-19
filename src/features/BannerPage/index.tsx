@@ -10,7 +10,7 @@ import clsx from "clsx";
 interface Banner {
   id: number;
   title: string;
-  imagePath: string;
+  image_path: string;
 }
 
 const BannerPage = () => {
@@ -21,8 +21,8 @@ const BannerPage = () => {
   useEffect(() => {
     const getBanners = async () => {
       try {
-        const res = await api.get("/banner"); // 실제 API 호출
-        setBanners(res.data); // 받아온 데이터로 상태 업데이트
+        const res = await api.get("/banner");
+        setBanners(res.data);
       } catch (err) {
         console.error("배너 불러오기 실패", err);
       }
@@ -41,7 +41,9 @@ const BannerPage = () => {
         const response = await api.delete(`/banner/${id}`);
 
         if (response.status === 200) {
-          router.reload();
+          setBanners((prevBanners) =>
+            prevBanners.filter((banner) => banner.id !== id)
+          );
         } else {
           alert("삭제를 실패했습니다. 다시 시도해주세요.");
         }
@@ -59,15 +61,17 @@ const BannerPage = () => {
     },
     {
       title: "배너 미리보기",
-      dataIndex: "imagePath",
-      render: (_: any, record: Banner) => (
-        <img
-          src={record.imagePath}
-          alt={record.title}
-          className="banner-img"
-          style={{ width: "150px", height: "auto" }}
-        />
-      ),
+      dataIndex: "image_path",
+      render: (_: any, record: Banner) => {
+        return (
+          <img
+            src={`http://localhost:5001${record.image_path}`}
+            alt={record.title}
+            className="banner-img"
+            style={{ width: "150px", height: "auto" }}
+          />
+        );
+      },
     },
     {
       title: "제목",
@@ -80,6 +84,7 @@ const BannerPage = () => {
           <Button
             onClick={(e) => {
               handleDelete(e, banner.id);
+              e.stopPropagation(); // 클릭 이벤트가 onRow로 전파되지 않도록 막음
             }}
           >
             삭제

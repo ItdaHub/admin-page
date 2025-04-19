@@ -35,7 +35,6 @@ const BannerForm = () => {
     },
     validate,
     onSubmit: async (values, { setSubmitting }) => {
-      console.log("제출됨:", values);
       try {
         const formData = new FormData();
         formData.append("title", values.title);
@@ -45,7 +44,7 @@ const BannerForm = () => {
 
         const res = await api.post("/banner/register", formData);
         message.success("배너가 등록되었습니다.");
-        router.push("/banners");
+        router.push("/bannerlist");
       } catch (err) {
         message.error("배너 등록 실패");
       } finally {

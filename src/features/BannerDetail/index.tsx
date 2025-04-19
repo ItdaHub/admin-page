@@ -9,7 +9,7 @@ import clsx from "clsx";
 interface Banner {
   id: number;
   title: string;
-  imagePath: string;
+  image_path: string;
 }
 
 const BannerDetail = () => {
@@ -46,7 +46,7 @@ const BannerDetail = () => {
           <Descriptions.Item label="이미지 미리보기">
             <img
               className="detail-image"
-              src={banner.imagePath}
+              src={`http://localhost:5001${banner.image_path}`}
               alt={banner.title}
             />
           </Descriptions.Item>
