@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 interface ReportData {
   id: number;
   reason: string;
-  content: string;
+  reported_content: string;
   reporter: {
     id: number;
     name: string;
