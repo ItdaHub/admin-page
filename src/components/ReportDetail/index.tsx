@@ -6,7 +6,8 @@ import router from "next/router";
 interface ReportData {
   id: number;
   reason: string;
-  content: string;
+  content?: string; // <- 필요 없다면 삭제해도 OK
+  reported_content: string; // ✅ 추가!
   reporter: {
     id: number;
     name: string;
@@ -64,7 +65,7 @@ const ReportDetail = ({ data, target_type }: Props) => {
         <div className="label">
           신고 내용 ({target_type === "comment" ? "댓글" : "소설"})
         </div>
-        <div className="value"></div>
+        <div className="value">{data.reported_content}</div>
       </div>
 
       {/* <div className="row">

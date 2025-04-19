@@ -60,20 +60,18 @@ const ReportManagement = ({ data, target_type }: Props) => {
   };
 
   const columns: ColumnsType<ReportData> = [
-    // { title: "번호", dataIndex: "id", key: "id" },
     {
       key: "num",
       title: "번호",
       dataIndex: "num",
-      render: (text: any, record: any, index: number) => {
-        return index + 1; // index는 0부터 시작하므로 +1을 해서 번호 부여
-      },
+      render: (_: any, __: any, index: number) => index + 1,
     },
     { title: "신고 이유", dataIndex: "reason", key: "reason" },
     {
-      title: "신고 내용",
-      dataIndex: "content",
-      key: "content",
+      title: "신고 대상",
+      dataIndex: "reported_content",
+      key: "reported_content",
+      render: (text: string) => text || "내용 없음",
     },
     {
       title: "신고자",
