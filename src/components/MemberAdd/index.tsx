@@ -46,7 +46,7 @@ const MemberAdd = ({ id }: { id?: number }) => {
       phone: "",
       nickname: "",
       birthYear: "",
-      role: "user",
+      user_type: "user",
       status: "active",
     },
     // 버튼을 눌렀을때 실행될 것(axios요청)
@@ -57,7 +57,6 @@ const MemberAdd = ({ id }: { id?: number }) => {
       }
       const { passwordCheck, ...filteredValues } = values;
 
-      console.log(values);
       console.log("뭐가 들었나", filteredValues);
 
       try {
@@ -88,7 +87,7 @@ const MemberAdd = ({ id }: { id?: number }) => {
           phone: values.phone,
           type: "local",
           age_group: ageGroup,
-          role: values.role,
+          user_type: values.user_type,
           status: values.status,
         };
 
@@ -142,7 +141,7 @@ const MemberAdd = ({ id }: { id?: number }) => {
             phone: data.phone || "",
             nickname: data.nickname || "",
             birthYear: data.birthYear || "",
-            role: data.user_type,
+            user_type: data.user_type,
             status: data.status,
             password: "",
             passwordCheck: "",
@@ -446,8 +445,8 @@ const MemberAdd = ({ id }: { id?: number }) => {
         <div className="add-box">
           <label className="add-status">권한</label>
           <Radio.Group
-            name="role"
-            value={userFormik.values.role}
+            name="user_type"
+            value={userFormik.values.user_type}
             onChange={userFormik.handleChange}
           >
             <Radio value="user">User</Radio>
@@ -463,7 +462,7 @@ const MemberAdd = ({ id }: { id?: number }) => {
             onChange={userFormik.handleChange}
           >
             <Radio value="active">활동</Radio>
-            <Radio value="suspended">정지</Radio>
+            <Radio value="stop">정지</Radio>
           </Radio.Group>
         </div>
         <Button htmlType="submit" disabled={!id && checkDisabled()}>

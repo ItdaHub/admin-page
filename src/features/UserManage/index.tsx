@@ -32,12 +32,8 @@ const UserManage = () => {
         user: x.name || x.nickname || "이름 없음", // 이름 또는 닉네임 사용, 없으면 기본값
         phone: x.phone || "전화번호 없음",
         noti: x.reportCount || 0,
-        status:
-          x.status === "stop" ? (
-            <div className="stop">정지</div>
-          ) : (
-            <div className="run">사용</div>
-          ),
+        status: x.status,
+        user_type: x.user_type,
         created_at: x.joinedDate || x.created_at, // 가입 날짜 필드명 확인
         popcornCount: x.popcornCount || 0, // 팝콘 수 필드명 확인
       }));
@@ -95,6 +91,7 @@ const UserManage = () => {
       팝콘수: user.popcornCount,
       가입일: user.created_at,
       상태: user.status?.props?.children,
+      권한: user.user_type,
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(excelData);
@@ -214,8 +211,9 @@ const UserManage = () => {
         x?.status === "stop" ? (
           <div className="stop">정지</div>
         ) : (
-          <div className="run">사용</div>
+          <div className="run">활동</div>
         ),
+      user_type: x?.user_type,
       created_at: x?.created_at, // 가입 날짜 포함
       popcornCount: x?.popcornCount, // 팝콘 수 포함
     }));
