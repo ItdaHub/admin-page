@@ -13,6 +13,8 @@ interface ReportData {
   reason: string;
   reporterId: string;
   created_at: string;
+  reported_user_id: number;
+  // status: "pending" | "processed"; // 신고 상태 추가
 }
 
 interface Props {
@@ -35,6 +37,71 @@ const ReportManagement = ({ data, target_type }: Props) => {
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
+    console.log(newSelectedRowKeys);
+    console.log(data);
+  };
+
+  // 신고 추가
+  const handleReportAdd = async () => {
+    // // 중복 신고 확인 // 신고 상태를 추가 할 경우 주석 해제
+    // const duplicateReports = report.filter(
+    //   (item) => selectedRowKeys.includes(item.id) && item.status === "processed"
+    // );
+
+    // if (duplicateReports.length > 0) {
+    //   message.error("이미 신고가 처리된 항목입니다.");
+    //   return; // 중복 신고 방지
+    // }
+
+    // 선택된 신고 항목 필터링
+    const selectedReports = report.filter((item) =>
+      selectedRowKeys.includes(item.id)
+    );
+
+    const countMap: { [key: number]: number } = {};
+
+    // 신고당한 유저 ID 기준으로 countMap 구성
+    selectedReports.forEach((item) => {
+      const reportedUserId = item.reported_user_id;
+
+      if (reportedUserId) {
+        console.log(`\n📌 현재 신고 대상 ID: ${reportedUserId}`);
+
+        // countMap에 값 추가 또는 누적
+        countMap[reportedUserId] = (countMap[reportedUserId] || 0) + 1;
+
+        console.log("✅ 갱신된 countMap 상태:", { ...countMap });
+      }
+    });
+
+    // [{ reported_user_id, count }] 형식으로 변환
+    const reportCounts = Object.entries(countMap).map(([id, count]) => ({
+      reported_user_id: Number(id),
+      count,
+    }));
+
+    try {
+      // 서버에 신고 카운트 전송
+      const res = await api.post("/users/report-counts", {
+        counts: reportCounts,
+      });
+
+      // // 신고 상태 업데이트 (처리된 항목으로 변경)
+      // const updatedReport = report.map((item) =>
+      //   selectedRowKeys.includes(item.id)
+      //     ? { ...item, status: "processed" } // 선택된 신고 항목 상태 변경
+      //     : item
+      // );
+
+      // setReport(updatedReport); // 상태 업데이트
+      if (res.status === 204) {
+        message.success("신고 횟수가 성공적으로 반영되었습니다.");
+        setSelectedRowKeys([]);
+      }
+    } catch (error) {
+      console.error("신고 추가 실패:", error);
+      message.error("신고 추가 중 문제가 발생했습니다.");
+    }
   };
 
   // 신고 목록 선택 삭제
@@ -55,6 +122,7 @@ const ReportManagement = ({ data, target_type }: Props) => {
     }
   };
 
+  // 상세페이지 이동
   const handleDetailClick = (id: number) => {
     router.push(`/reports/${target_type}/${id}`);
   };
@@ -121,7 +189,11 @@ const ReportManagement = ({ data, target_type }: Props) => {
       <div className="report-head">
         <TitleCompo title="신고 관리" />
         <div style={{ display: "flex", gap: 10 }}>
-          <Button type="primary" disabled={!selectedRowKeys.length}>
+          <Button
+            type="primary"
+            disabled={!selectedRowKeys.length}
+            onClick={handleReportAdd}
+          >
             신고 추가
           </Button>
           <Button
