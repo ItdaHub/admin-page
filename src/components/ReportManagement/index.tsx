@@ -60,25 +60,27 @@ const ReportManagement = ({ data, target_type }: Props) => {
   };
 
   const columns: ColumnsType<ReportData> = [
-    { title: "번호", dataIndex: "id", key: "id" },
+    // { title: "번호", dataIndex: "id", key: "id" },
+    {
+      key: "num",
+      title: "번호",
+      dataIndex: "num",
+      render: (text: any, record: any, index: number) => {
+        return index + 1; // index는 0부터 시작하므로 +1을 해서 번호 부여
+      },
+    },
     { title: "신고 이유", dataIndex: "reason", key: "reason" },
     {
       title: "신고 내용",
       dataIndex: "content",
       key: "content",
-      render: (_: any, record: ReportData) => (
-        <span
-          onClick={() => handleDetailClick(record.id)}
-          style={{ cursor: "pointer", color: "#1890ff" }}
-        >
-          {record.content}
-        </span>
-      ),
     },
     {
       title: "신고자",
       dataIndex: "reporterId",
       key: "reporterId",
+      render: (_: any, record: any) =>
+        record?.reporter?.nickname || record?.reporter?.name || "알 수 없음",
     },
     {
       title: "신고일",
@@ -149,6 +151,10 @@ const ReportManagement = ({ data, target_type }: Props) => {
         rowSelection={rowSelection}
         rowKey="id"
         pagination={{ pageSize: 10 }}
+        onRow={(record) => ({
+          onClick: () => handleDetailClick(record.id),
+          style: { cursor: "pointer" },
+        })}
       />
     </ReportManageStyled>
   );

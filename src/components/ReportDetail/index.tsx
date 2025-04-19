@@ -7,8 +7,14 @@ interface ReportData {
   id: number;
   reason: string;
   content: string;
-  reporter: string;
-  date: string;
+  reporter: {
+    id: number;
+    name: string;
+    nickname: string;
+  };
+  created_at?: string;
+  userId?: number;
+  target_id?: number;
 }
 
 interface Props {
@@ -36,17 +42,17 @@ const ReportDetail = ({ data, target_type }: Props) => {
   return (
     <ReportDetailStyled className={clsx("reportdetail-wrap")}>
       <h2 className="header">
-        {target_type === "comment" ? "댓글" : "소설"} 신고 상세
+        {target_type === "comment" ? "댓글" : "소설"} 신고 상세 보기
       </h2>
 
       <div className="row">
         <div className="label">신고자 ID</div>
-        <div className="value">{data.id}</div>
+        <div className="value">{data.reporter.id}</div>
       </div>
 
       <div className="row">
         <div className="label">신고자</div>
-        <div className="value">{data.reporter}</div>
+        <div className="value">{data.reporter.nickname}</div>
       </div>
 
       <div className="row">
@@ -55,23 +61,26 @@ const ReportDetail = ({ data, target_type }: Props) => {
       </div>
 
       <div className="row">
-        <div className="label">신고된 댓글/소설</div>
-        <div className="value">신고된 댓글/소설</div>
-      </div>
-
-      <div className="row">
-        <div className="label">신고 내용</div>
-        <div className="value">{data.content}</div>
+        <div className="label">
+          신고 내용 ({target_type === "comment" ? "댓글" : "소설"})
+        </div>
+        <div className="value"></div>
       </div>
 
       {/* <div className="row">
-        <div className="label">작성자</div>
-        <div className="value">{data.userId}</div>
+        <div className="label">신고된 내용</div>
+        <div className="value">{data.content}</div>
       </div> */}
 
       <div className="row">
+        <div className="label">신고된 글 작성자</div>
+        {/* <div className="value">{data.userId}</div> */}
+        {<div className="value">{data.target_id}</div>}
+      </div>
+
+      <div className="row">
         <div className="label">신고 날짜</div>
-        <div className="value">{data.date}</div>
+        <div className="value">{data.created_at}</div>
       </div>
 
       <div className="delete-btn">

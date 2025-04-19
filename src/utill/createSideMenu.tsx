@@ -45,7 +45,7 @@ export const sidebarMenus = createSidebarMenus([
         label: "댓글",
       },
       {
-        key: "/reports/novel",
+        key: "/reports/chapter",
         label: "소설",
       },
     ],

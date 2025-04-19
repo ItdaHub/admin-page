@@ -10,9 +10,10 @@ export const ReportManageStyled = styled.div`
 
     .manage-info {
       display: flex;
-      align-content: center;
+      align-items: center;
       flex-wrap: nowrap;
       gap: 10px;
+      margin-bottom: 10px;
     }
   }
 `;
