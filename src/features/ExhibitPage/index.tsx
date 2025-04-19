@@ -27,7 +27,7 @@ const ExhibitPage = () => {
         writer: x.writer, //소설 작가
         date: x.date, //소설 완결된 날짜
         status:
-          x.status === "ready" ? (
+          x.status === "completed" ? (
             <div className="ready">대기중</div>
           ) : (
             <div className="publish">출품 완료</div>
