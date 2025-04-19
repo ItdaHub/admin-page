@@ -83,8 +83,10 @@ const MemberAdd = ({ id }: { id?: number }) => {
           password: values.password,
           birthYear: values.birthYear,
           phone: values.phone,
-          type: "local", // LoginType에 'local'이 있다면 설정, 백엔드와 협의 필요
+          type: "local",
           age_group: ageGroup,
+          role: values.role,
+          status: values.status,
         };
 
         if (id) {
