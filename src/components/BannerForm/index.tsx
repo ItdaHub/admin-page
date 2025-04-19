@@ -9,7 +9,6 @@ import TitleCompo from "../TitleCompo";
 
 interface FormState {
   title: string;
-  url: string;
   image: File | null;
 }
 
@@ -18,13 +17,6 @@ const validate = (values: FormState) => {
 
   if (!values.title) {
     errors.title = "제목을 입력하세요.";
-  }
-
-  if (!values.url) {
-    errors.url = "연결 URL을 입력하세요.";
-  } else if (!/^\/[\w\-\/]*$/.test(values.url)) {
-    errors.url =
-      "URL은 '/'로 시작해야 하며 영문, 숫자, '-', '/'만 사용할 수 있습니다.";
   }
 
   if (!values.image) {
@@ -39,7 +31,6 @@ const BannerForm = () => {
   const formik = useFormik<FormState>({
     initialValues: {
       title: "",
-      url: "",
       image: null,
     },
     validate,
@@ -48,7 +39,6 @@ const BannerForm = () => {
       try {
         const formData = new FormData();
         formData.append("title", values.title);
-        formData.append("url", values.url);
         if (values.image) {
           formData.append("image", values.image);
         }
@@ -100,18 +90,7 @@ const BannerForm = () => {
             <div className="form-error">{formik.errors.title}</div>
           )}
         </div>
-        <div className="form-item">
-          <label className="form-label">링크 URL</label>
-          <Input
-            name="url"
-            value={formik.values.url}
-            onChange={formik.handleChange}
-            placeholder="/newwrite"
-          />
-          {formik.touched.url && formik.errors.url && (
-            <div className="form-error">{formik.errors.url}</div>
-          )}
-        </div>
+
         <div className="form-item">
           <label className="form-label">이미지 업로드</label>
           <Input
@@ -120,7 +99,6 @@ const BannerForm = () => {
             onChange={(e) => {
               formik.setFieldValue("image", e.currentTarget.files?.[0] || null);
             }}
-            // style={{ height: 300 }}
           />
           {imagePreview && (
             <img

@@ -6,39 +6,30 @@ import TitleCompo from "@/components/TitleCompo";
 import { BannerDetailStyled } from "./styled";
 import clsx from "clsx";
 
+interface Banner {
+  id: number;
+  title: string;
+  imagePath: string;
+}
+
 const BannerDetail = () => {
   const router = useRouter();
-  //   const { id } = router.query;
-  const [banner, setBanner] = useState<any>(null); // 배너 관리
+  const { id } = router.query;
+  const [banner, setBanner] = useState<Banner | null>(null);
 
-  const { id, data } = router.query; // 임시 사용 (test)
-
-  //  test
   useEffect(() => {
-    if (data) {
-      try {
-        const parsed = JSON.parse(data as string);
-        setBanner(parsed);
-      } catch (err) {
-        console.error("파싱 실패", err);
-      }
+    if (id) {
+      const getBanner = async () => {
+        try {
+          const res = await api.get(`/banner/${id}`);
+          setBanner(res.data);
+        } catch (err) {
+          console.error("배너 상세 불러오기 실패", err);
+        }
+      };
+      getBanner();
     }
-  }, [data]);
-
-  //   실제 데이터일 경우 axios 요청
-  //   useEffect(() => {
-  //     if (id) {
-  //       const getBanner = async () => {
-  //         try {
-  //           const res = await api.get(`/banner/${id}`); // 주소는 나중에 재설정
-  //           setBanner(res.data);
-  //         } catch (err) {
-  //           console.error("배너 상세 불러오기 실패", err);
-  //         }
-  //       };
-  //       getBanner();
-  //     }
-  //   }, [id]);
+  }, [id]);
 
   if (!banner) return <div>로딩 중...</div>;
 
@@ -52,11 +43,10 @@ const BannerDetail = () => {
         <Descriptions column={1} bordered size="middle">
           <Descriptions.Item label="ID">{banner.id}</Descriptions.Item>
           <Descriptions.Item label="제목">{banner.title}</Descriptions.Item>
-          <Descriptions.Item label="URL">{banner.linkUrl}</Descriptions.Item>
           <Descriptions.Item label="이미지 미리보기">
             <img
               className="detail-image"
-              src={banner.imageUrl}
+              src={banner.imagePath}
               alt={banner.title}
             />
           </Descriptions.Item>

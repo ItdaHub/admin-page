@@ -10,8 +10,7 @@ import clsx from "clsx";
 interface Banner {
   id: number;
   title: string;
-  imageUrl: string;
-  linkUrl: string;
+  imagePath: string;
 }
 
 const BannerPage = () => {
@@ -60,10 +59,10 @@ const BannerPage = () => {
     },
     {
       title: "배너 미리보기",
-      dataIndex: "imageUrl",
+      dataIndex: "imagePath",
       render: (_: any, record: Banner) => (
         <img
-          src={record.imageUrl}
+          src={record.imagePath}
           alt={record.title}
           className="banner-img"
           style={{ width: "150px", height: "auto" }}
@@ -73,10 +72,6 @@ const BannerPage = () => {
     {
       title: "제목",
       dataIndex: "title",
-    },
-    {
-      title: "URL",
-      dataIndex: "linkUrl",
     },
     {
       title: "관리",
@@ -110,12 +105,7 @@ const BannerPage = () => {
         bordered
         onRow={(record) => ({
           onClick: () => {
-            router.push({
-              pathname: `/bannerdetail/${record.id}`,
-              query: {
-                data: JSON.stringify(record),
-              },
-            });
+            router.push(`/bannerdetail/${record.id}`);
           },
         })}
         locale={{
