@@ -76,14 +76,14 @@ const NoticeDetail = () => {
         {notice.priority === "normal" ? "[기본]" : "[긴급]"} {notice.title}
       </h1>
       <div className="detail-info">
-        <p>
-          <strong>작성자 </strong>
+        <div className="write">
+          <div className="strong">작성자 </div>
           {notice.admin?.nickname}
-        </p>
-        <p>
-          <strong>작성일 </strong>
+        </div>
+        <div className="write">
+          <div className="strong">작성일 </div>
           {notice.created_at.replace("T", " ").slice(0, 19)}
-        </p>
+        </div>
       </div>
       <hr />
       <div className="content-box">{notice.content}</div>

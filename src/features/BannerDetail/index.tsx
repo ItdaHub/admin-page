@@ -39,19 +39,21 @@ const BannerDetail = () => {
         <TitleCompo title="배너 상세" />
         <Button onClick={() => router.back()}>목록으로</Button>
       </div>
-      <Card className="detail-box">
-        <Descriptions column={1} bordered size="middle">
-          <Descriptions.Item label="ID">{banner.id}</Descriptions.Item>
-          <Descriptions.Item label="제목">{banner.title}</Descriptions.Item>
-          <Descriptions.Item label="이미지 미리보기">
-            <img
-              className="detail-image"
-              src={`http://localhost:5001${banner.image_path}`}
-              alt={banner.title}
-            />
-          </Descriptions.Item>
-        </Descriptions>
-      </Card>
+      <div className="detail-box">
+        <Card className="card-box">
+          <Descriptions column={1} bordered size="middle">
+            <Descriptions.Item label="ID">{banner.id}</Descriptions.Item>
+            <Descriptions.Item label="제목">{banner.title}</Descriptions.Item>
+            <Descriptions.Item label="이미지 미리보기">
+              <img
+                className="detail-image"
+                src={`http://localhost:5001${banner.image_path}`}
+                alt={banner.title}
+              />
+            </Descriptions.Item>
+          </Descriptions>
+        </Card>
+      </div>
     </BannerDetailStyled>
   );
 };

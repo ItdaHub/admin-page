@@ -32,6 +32,7 @@ const ReportDetail = ({ data, target_type }: Props) => {
         `${target_type === "comment" ? "댓글" : "소설"} 신고가 삭제되었습니다.`
       );
       router.push(`/reports/${target_type}`);
+      router.push(`/reports/${target_type}`);
     } catch (error) {
       console.error("삭제 실패", error);
       alert("삭제 중 오류가 발생했습니다.");
@@ -44,7 +45,7 @@ const ReportDetail = ({ data, target_type }: Props) => {
 
     try {
       await api.patch(`/reports/${data.id}/handle`);
-      alert("신고가 처리되었습니다.");
+
       router.push(`/reports/${target_type}`);
     } catch (error) {
       console.error("신고 처리 실패", error);

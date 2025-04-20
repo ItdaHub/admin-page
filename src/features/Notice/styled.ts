@@ -17,6 +17,10 @@ export const NoticeStyled = styled.div`
       margin-bottom: 10px;
     }
 
+    .notice-row {
+      cursor: pointer;
+    }
+
     .setting-button {
       display: flex;
       gap: 10px;
