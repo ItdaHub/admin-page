@@ -12,7 +12,7 @@ interface Notice {
   id: number;
   title: string;
   admin: { nickname: string };
-  created_at: Date;
+  created_at: string;
   content: string;
   priority: string;
 }
@@ -44,7 +44,6 @@ const NoticeManage = () => {
   }, []);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -138,6 +137,8 @@ const NoticeManage = () => {
     {
       title: "작성일자",
       dataIndex: "created_at",
+      render: (_: any, record) =>
+        record.created_at.replace("T", " ").slice(0, 19),
       width: "20%",
     },
     {

@@ -12,8 +12,8 @@ interface ReportData {
     name: string;
     nickname: string;
   };
-  created_at?: string;
-  reported_user_id?: number;
+  created_at: string;
+  reported_user_id: number;
 }
 
 interface Props {
@@ -73,7 +73,9 @@ const ReportDetail = ({ data, target_type }: Props) => {
 
       <div className="row">
         <div className="label">신고 날짜</div>
-        <div className="value">{data.created_at}</div>
+        <div className="value">
+          {data.created_at.replace("T", " ").slice(0, 19)}
+        </div>
       </div>
 
       <div className="report-btn">

@@ -13,6 +13,7 @@ interface ReportData {
     nickname: string;
   };
   created_at: string;
+  reported_user_id: number;
 }
 
 const ReportDetail = () => {

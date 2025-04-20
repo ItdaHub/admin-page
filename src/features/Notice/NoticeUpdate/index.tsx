@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Input, Button, Form, message } from "antd";
-import api from "@/utill/api"; // api 호출을 위한 axios 인스턴스
+import api from "@/utill/api";
 
 interface Notice {
   id: number;
@@ -21,18 +21,19 @@ const NoticeUpdatePage = () => {
       setLoading(true);
       try {
         const res = await api.get<Notice>(`/announcement/${id}`);
-        form.setFieldsValue(res.data);
+        setTimeout(() => {
+          form.setFieldsValue(res.data);
+        }, 0);
       } catch (error: any) {
         console.error("공지사항 불러오기 실패:", error);
         message.error("공지사항 정보를 불러오는 데 실패했습니다.");
-        router.push("/notice-manage");
+        router.push("/notice");
       } finally {
         setLoading(false);
       }
     };
-
     fetchNotice();
-  }, [router, id, form]);
+  }, [id]);
 
   const onFinish = async (values: Notice) => {
     try {
@@ -81,7 +82,7 @@ const NoticeUpdatePage = () => {
             저장
           </Button>
           <Button
-            onClick={() => router.push("/notice-manage")}
+            onClick={() => router.push("/notice")}
             style={{ marginLeft: 8 }}
           >
             취소

@@ -110,6 +110,8 @@ const ReportManagement = ({ data, target_type }: Props) => {
       title: "신고일",
       dataIndex: "created_at",
       key: "created_at",
+      render: (_: any, record) =>
+        record.created_at.replace("T", " ").slice(0, 19),
       sorter: (a: ReportData, b: ReportData) =>
         new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     },
