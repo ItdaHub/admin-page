@@ -27,7 +27,7 @@ const ReportDetail = ({ data, target_type }: Props) => {
     if (!confirm) return;
 
     try {
-      await api.delete(`/reports/comment/${data.id}`); // ← id 필요
+      await api.delete(`/reports/comment/${data.id}`); // ← 백엔드에 따라 수정 가능
       alert(
         `${target_type === "comment" ? "댓글" : "소설"} 신고가 삭제되었습니다.`
       );
@@ -35,6 +35,20 @@ const ReportDetail = ({ data, target_type }: Props) => {
     } catch (error) {
       console.error("삭제 실패", error);
       alert("삭제 중 오류가 발생했습니다.");
+    }
+  };
+
+  const handleProcessReport = async () => {
+    const confirm = window.confirm("신고를 처리하시겠습니까?");
+    if (!confirm) return;
+
+    try {
+      await api.patch(`/reports/${data.id}/handle`);
+      alert("신고가 처리되었습니다.");
+      router.push("/reports");
+    } catch (error) {
+      console.error("신고 처리 실패", error);
+      alert("신고 처리 중 오류가 발생했습니다.");
     }
   };
 
@@ -79,7 +93,9 @@ const ReportDetail = ({ data, target_type }: Props) => {
       </div>
 
       <div className="report-btn">
-        <button className="add">신고 추가</button>
+        <button className="add" onClick={handleProcessReport}>
+          신고 처리
+        </button>
         <button className="remove" onClick={handleDelete}>
           신고 삭제
         </button>
