@@ -116,6 +116,7 @@ const BannerPage = () => {
           emptyText:
             "등록된 배너가 없습니다. 상단의 [등록] 버튼을 눌러 추가해보세요.",
         }}
+        rowClassName="banner-row"
       />
     </BannerPageStyled>
   );

@@ -14,6 +14,15 @@ export const NoticeDetailStyled = styled.div`
       display: flex;
       gap: 15px;
       margin: 10px 0;
+      align-items: center;
+
+      .write {
+        display: flex;
+        gap: 5px;
+      }
+      .strong {
+        font-weight: 600;
+      }
     }
 
     .content-box {

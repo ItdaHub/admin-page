@@ -78,15 +78,10 @@ const NoticeUpdatePage = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" style={{ marginRight: 8 }}>
+          <Button type="primary" htmlType="submit" style={{ marginRight: 10 }}>
             저장
           </Button>
-          <Button
-            onClick={() => router.push("/notice")}
-            style={{ marginLeft: 8 }}
-          >
-            취소
-          </Button>
+          <Button onClick={() => router.push("/notice")}>취소</Button>
         </Form.Item>
       </Form>
     </div>

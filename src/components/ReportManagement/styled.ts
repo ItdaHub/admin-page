@@ -21,5 +21,9 @@ export const ReportManageStyled = styled.div`
       gap: 10px;
       margin-bottom: 10px;
     }
+
+    .ant-table-cell-row-hover {
+      cursor: pointer;
+    }
   }
 `;

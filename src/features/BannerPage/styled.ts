@@ -14,5 +14,8 @@ export const BannerPageStyled = styled.div`
       height: 80px;
       object-fit: cover;
     }
+    .banner-row {
+      cursor: pointer;
+    }
   }
 `;

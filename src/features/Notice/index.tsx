@@ -25,7 +25,7 @@ const NoticeManage = () => {
   const [sortOrder, setSortOrder] = useState<"DESC" | "ASC">("DESC");
   const [loading, setLoading] = useState(true);
 
-  // 공지사항 불러오는 axios 요청
+  // 공지사항 불러오기
   const getNotiList = async () => {
     setLoading(true);
     try {
@@ -199,7 +199,6 @@ const NoticeManage = () => {
 
       <Table
         columns={columns}
-        // dataSource={noti}
         dataSource={sortedNoti}
         pagination={{ pageSize: 5 }}
         rowKey="id"
@@ -209,15 +208,10 @@ const NoticeManage = () => {
         onRow={(record) => ({
           onClick: () => router.push(`/noticedetail/${record.id}`),
         })}
+        rowClassName="notice-row"
       />
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: 16,
-        }}
-      >
+      <div>
         <Button
           type="primary"
           danger
