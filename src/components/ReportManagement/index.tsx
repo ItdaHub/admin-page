@@ -56,6 +56,7 @@ const ReportManagement = ({ data, target_type }: Props) => {
         (item) => !selectedRowKeys.includes(item.id)
       );
       setReport(updatedReport);
+
       setSelectedRowKeys([]);
     } catch (error) {
       console.error("신고 처리 실패:", error);
