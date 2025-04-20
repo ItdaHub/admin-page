@@ -27,7 +27,8 @@ const ReportDetail = ({ data, target_type }: Props) => {
     if (!confirm) return;
     console.log(data, "뭘 수정해야하나");
     try {
-      await api.delete(`/reports/${data.id}`); // ← 백엔드에 따라 수정 가능
+      await api.delete(`/reports/${data.id}`);
+
       alert(
         `${target_type === "comment" ? "댓글" : "소설"} 신고가 삭제되었습니다.`
       );
