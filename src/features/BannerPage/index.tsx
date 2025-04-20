@@ -3,7 +3,6 @@ import { BannerPageStyled } from "./styled";
 import { useEffect, useState } from "react";
 import { Button, Table } from "antd";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import api from "@/utill/api";
 import clsx from "clsx";
 
@@ -57,7 +56,8 @@ const BannerPage = () => {
   const columns = [
     {
       title: "번호",
-      dataIndex: "id",
+      dataIndex: "num",
+      render: (_: any, __: any, index: number) => index + 1,
     },
     {
       title: "배너 미리보기",
@@ -68,7 +68,6 @@ const BannerPage = () => {
             src={`http://localhost:5001${record.image_path}`}
             alt={record.title}
             className="banner-img"
-            style={{ width: "150px", height: "auto" }}
           />
         );
       },
@@ -84,7 +83,7 @@ const BannerPage = () => {
           <Button
             onClick={(e) => {
               handleDelete(e, banner.id);
-              e.stopPropagation(); // 클릭 이벤트가 onRow로 전파되지 않도록 막음
+              e.stopPropagation();
             }}
           >
             삭제

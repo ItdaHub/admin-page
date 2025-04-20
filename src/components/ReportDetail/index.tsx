@@ -13,7 +13,6 @@ interface ReportData {
     nickname: string;
   };
   created_at?: string;
-  userId?: number;
   reported_user_id?: number;
 }
 
@@ -67,15 +66,9 @@ const ReportDetail = ({ data, target_type }: Props) => {
         <div className="value">{data.reported_content}</div>
       </div>
 
-      {/* <div className="row">
-        <div className="label">신고된 내용</div>
-        <div className="value">{data.content}</div>
-      </div> */}
-
       <div className="row">
         <div className="label">신고된 글 작성자</div>
-        {/* <div className="value">{data.userId}</div> */}
-        {<div className="value">{data.reported_user_id}</div>}
+        <div className="value">{data.reported_user_id}</div>
       </div>
 
       <div className="row">
@@ -83,8 +76,11 @@ const ReportDetail = ({ data, target_type }: Props) => {
         <div className="value">{data.created_at}</div>
       </div>
 
-      <div className="delete-btn">
-        <button onClick={handleDelete}>삭제</button>
+      <div className="report-btn">
+        <button className="add">신고 추가</button>
+        <button className="remove" onClick={handleDelete}>
+          신고 삭제
+        </button>
       </div>
     </ReportDetailStyled>
   );

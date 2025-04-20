@@ -17,9 +17,9 @@ export const BannerDetailStyled = styled.div`
     .detail-image {
       width: 100%;
       max-width: 700px;
-      height: auto;
+      height: 300px;
       border: 1px solid #eee;
-      object-fit: contain;
+
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       margin: 8px 0;
     }

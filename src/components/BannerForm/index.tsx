@@ -100,15 +100,7 @@ const BannerForm = () => {
             }}
           />
           {imagePreview && (
-            <img
-              src={imagePreview}
-              alt="미리보기"
-              style={{
-                width: "100%",
-                marginTop: 10,
-                objectFit: "cover",
-              }}
-            />
+            <img src={imagePreview} alt="미리보기" className="form-image" />
           )}
 
           {formik.touched.image && formik.errors.image && (

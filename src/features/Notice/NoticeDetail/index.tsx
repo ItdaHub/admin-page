@@ -4,13 +4,16 @@ import { Button } from "antd";
 import Link from "next/link";
 import TitleCompo from "@/components/TitleCompo";
 import api from "@/utill/api";
+import { NoticeDetailStyled } from "./styled";
+import clsx from "clsx";
 
 interface Notice {
   id: number;
   title: string;
   admin: { nickname: string };
-  createdAt: string;
+  created_at: string;
   content: string;
+  priority: string;
 }
 
 const NoticeDetail = () => {
@@ -25,6 +28,7 @@ const NoticeDetail = () => {
       setLoading(true);
       try {
         const res = await api.get<Notice>(`/announcement/${id}`);
+        console.log(res.data);
         setNotice(res.data);
       } catch (error: any) {
         console.error("공지사항 상세 정보 불러오기 실패:", error);
@@ -45,36 +49,36 @@ const NoticeDetail = () => {
   }
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <TitleCompo title="공지사항" />
-      <h1>{notice.title}</h1>
-      <div
-        style={{ display: "flex", gap: 15, marginTop: 10, marginBottom: 10 }}
-      >
+    <NoticeDetailStyled className={clsx("notice-detail-wrap")}>
+      <div className="notice-detail-box">
+        <TitleCompo title="공지사항" />
+        <Button onClick={() => router.push(`/notice`)}>목록으로</Button>
+      </div>
+      <h1>
+        {[notice.priority === "normal" ? "[기본]" : "[긴급]"]} {notice.title}
+      </h1>
+      <div className="detail-info">
         <p>
           <strong>작성자 </strong>
           {notice.admin?.nickname}
         </p>
         <p>
           <strong>작성일 </strong>
-          {notice.createdAt}
+          {notice.created_at}
         </p>
       </div>
       <hr />
-      <p>{notice.content}</p>
+      <div className="content-box">{notice.content}</div>
 
-      <div style={{ marginTop: "2rem" }}>
+      <div>
         <Button
           type="primary"
           onClick={() => router.push(`/noticeupdate/${notice.id}`)}
-          style={{ marginRight: 8 }}
         >
           수정하기
         </Button>
-
-        <Button onClick={() => router.push(`/notice`)}>목록으로</Button>
       </div>
-    </div>
+    </NoticeDetailStyled>
   );
 };
 

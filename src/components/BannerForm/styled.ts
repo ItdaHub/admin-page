@@ -18,6 +18,13 @@ export const BannerFormStyled = styled.div`
       .form-label {
         margin-bottom: 10px;
       }
+
+      .form-image {
+        width: 100%;
+        margin-top: 10px;
+        object-fit: cover;
+      }
+
       .form-error {
         color: red;
         font-size: 14px;

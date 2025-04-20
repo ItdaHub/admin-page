@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Table, Button, message } from "antd";
+import { Table, Button, message, Select } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { NoticeStyled } from "./styled";
@@ -14,7 +14,7 @@ interface Notice {
   admin: { nickname: string };
   created_at: Date;
   content: string;
-  priorityLabel: string;
+  priority: string;
 }
 
 const NoticeManage = () => {
@@ -22,6 +22,7 @@ const NoticeManage = () => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [noti, setNoti] = useState<Notice[]>([]);
+  const [sortOrder, setSortOrder] = useState<"DESC" | "ASC">("DESC");
   const [loading, setLoading] = useState(true);
 
   // 공지사항 불러오는 axios 요청
@@ -104,36 +105,46 @@ const NoticeManage = () => {
     }
   };
 
+  const sortedNoti = [...noti].sort((a, b) => {
+    const aTime = new Date(a.created_at).getTime();
+    const bTime = new Date(b.created_at).getTime();
+    return sortOrder === "DESC" ? bTime - aTime : aTime - bTime;
+  });
+
   const columns: ColumnsType<Notice> = [
     {
       title: "번호",
       render: (text, record, index) => index + 1,
+      width: "10%",
     },
     {
       title: "제목",
       dataIndex: "title",
-      render: (text, record) => (
-        <span
-          style={{ color: "#1677ff", cursor: "pointer" }}
-          onClick={() => router.push(`/noticedetail/${record.id}`)}
-        >
-          {text}
-        </span>
-      ),
+      render: (text, record) => {
+        const priority = record.priority === "normal" ? "[기본]" : "[긴급]";
+        return (
+          <span>
+            {priority} {text}
+          </span>
+        );
+      },
+      width: "35%",
     },
     {
       title: "작성자",
       dataIndex: ["admin", "nickname"],
+      width: "15%",
     },
     {
       title: "작성일자",
       dataIndex: "created_at",
+      width: "20%",
     },
     {
       key: "setting",
       title: "관리",
       render: (data: Notice) => (
-        <>
+        <div className="setting-button">
           <Button
             onClick={(e) => {
               e.stopPropagation();
@@ -151,8 +162,9 @@ const NoticeManage = () => {
           >
             삭제
           </Button>
-        </>
+        </div>
       ),
+      width: "20%",
     },
   ];
 
@@ -170,15 +182,32 @@ const NoticeManage = () => {
           새 공지사항
         </Button>
       </div>
+      <div className="notice-info">
+        <div>공지</div>
+        <div>총 {noti.length}건</div>
+        <Select
+          value={sortOrder}
+          style={{ width: 120 }}
+          onChange={(value) => setSortOrder(value)}
+          options={[
+            { value: "DESC", label: "최신순" },
+            { value: "ASC", label: "오래된순" },
+          ]}
+        />
+      </div>
 
       <Table
         columns={columns}
-        dataSource={noti}
+        // dataSource={noti}
+        dataSource={sortedNoti}
         pagination={{ pageSize: 5 }}
         rowKey="id"
         loading={loading}
         showHeader={true}
         rowSelection={rowSelection}
+        onRow={(record) => ({
+          onClick: () => router.push(`/noticedetail/${record.id}`),
+        })}
       />
 
       <div
@@ -188,8 +217,8 @@ const NoticeManage = () => {
           marginTop: 16,
         }}
       >
-        <div>{selectedRowKeys.length}건 선택됨</div>
         <Button
+          type="primary"
           danger
           icon={<DeleteOutlined />}
           disabled={selectedRowKeys.length === 0}

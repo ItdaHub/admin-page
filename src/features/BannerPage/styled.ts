@@ -11,6 +11,8 @@ export const BannerPageStyled = styled.div`
     }
     .banner-img {
       width: 150px;
+      height: 80px;
+      object-fit: cover;
     }
   }
 `;

@@ -188,7 +188,7 @@ const ReportManagement = ({ data, target_type }: Props) => {
     <ReportManageStyled className={clsx("report-wrap")}>
       <div className="report-head">
         <TitleCompo title="신고 관리" />
-        <div style={{ display: "flex", gap: 10 }}>
+        <div className="report-active-btn">
           <Button
             type="primary"
             disabled={!selectedRowKeys.length}
@@ -198,6 +198,7 @@ const ReportManagement = ({ data, target_type }: Props) => {
           </Button>
           <Button
             type="primary"
+            danger
             onClick={handleDelete}
             disabled={!selectedRowKeys.length}
           >
@@ -223,7 +224,6 @@ const ReportManagement = ({ data, target_type }: Props) => {
         pagination={{ pageSize: 10 }}
         onRow={(record) => ({
           onClick: () => handleDetailClick(record.id),
-          style: { cursor: "pointer" },
         })}
       />
     </ReportManageStyled>

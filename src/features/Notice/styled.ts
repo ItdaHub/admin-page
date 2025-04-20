@@ -9,5 +9,17 @@ export const NoticeStyled = styled.div`
       justify-content: space-between;
       margin-bottom: 16px;
     }
+
+    .notice-info {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .setting-button {
+      display: flex;
+      gap: 10px;
+    }
   }
 `;
