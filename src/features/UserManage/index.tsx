@@ -31,7 +31,7 @@ const UserManage = () => {
         email: x.email,
         user: x.name || x.nickname || "이름 없음", // 이름 또는 닉네임 사용, 없으면 기본값
         phone: x.phone || "전화번호 없음",
-        noti: x.reportCount || 0,
+        report_count: x.report_count || 0,
         status: x.status,
         user_type: x.user_type,
         created_at: x.joinedDate || x.created_at, // 가입 날짜 필드명 확인
@@ -59,9 +59,11 @@ const UserManage = () => {
           ? new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
           : new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       );
-    } else if (sortKey === "noti") {
+    } else if (sortKey === "report_count") {
       sorted.sort((a, b) =>
-        notiOrder === "DESC" ? b.noti - a.noti : a.noti - b.noti
+        notiOrder === "DESC"
+          ? b.report_count - a.report_count
+          : a.report_count - b.report_count
       );
     } else if (sortKey === "user") {
       sorted.sort((a, b) => {
@@ -87,7 +89,7 @@ const UserManage = () => {
       아이디: user.email,
       이름: user.user,
       전화번호: user.phone,
-      신고횟수: user.noti,
+      신고횟수: user.report_count,
       팝콘수: user.popcornCount,
       가입일: user.created_at,
       상태: user.status?.props?.children,
@@ -166,14 +168,14 @@ const UserManage = () => {
       dataIndex: "phone",
     },
     {
-      key: "noti",
+      key: "report_count",
       title: "신고 횟수",
-      dataIndex: "noti",
+      dataIndex: "report_count",
       sorter: true,
       sortDirections: ["ascend", "descend"],
       onHeaderCell: (column: any) => ({
         onClick: () => {
-          setSortKey("noti");
+          setSortKey("report_count");
           setNotiOrder(notiOrder === "DESC" ? "ASC" : "DESC");
         },
       }),
@@ -206,7 +208,7 @@ const UserManage = () => {
       email: x?.email,
       user: x?.user,
       phone: x?.phone,
-      noti: x?.noti,
+      report_count: x?.report_count,
       status:
         x?.status === "stop" ? (
           <div className="stop">정지</div>
