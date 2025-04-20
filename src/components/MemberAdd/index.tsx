@@ -98,7 +98,7 @@ const MemberAdd = ({ id }: { id?: number }) => {
           router.push("/users/manage");
         } else {
           // 추가
-          await api.post("/auth/register", registerData); // RegisterDto에 맞춘 데이터 전송
+          await api.post("/users", registerData); // ✅ 경로 변경!
           alert("추가 완료");
           router.push("/users/manage");
         }
