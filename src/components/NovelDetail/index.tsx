@@ -4,7 +4,7 @@ import api from "@/utill/api";
 import { Button, Result, Spin, Table } from "antd";
 import { NovelDetailStyled } from "./styled";
 import clsx from "clsx";
-
+import { App as AntdApp } from "antd";
 interface Chapter {
   id: number;
   chapterNumber: string;
@@ -29,6 +29,7 @@ const NovelDetail = ({ novelId, status }: NovelDetailProps) => {
   const [novelDetail, setNovelDetail] = useState<NovelDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { message } = AntdApp.useApp();
 
   useEffect(() => {
     if (novelId) {
@@ -53,7 +54,7 @@ const NovelDetail = ({ novelId, status }: NovelDetailProps) => {
     if (novelId) {
       try {
         await api.delete(`/admin/delete/${novelId}`);
-        alert("소설이 삭제되었습니다.");
+        message.success("소설이 삭제되었습니다.");
         router.push("/exhibit");
       } catch (error: any) {
         setError(`소설 삭제에 실패했습니다: ${error.message}`);
@@ -65,10 +66,11 @@ const NovelDetail = ({ novelId, status }: NovelDetailProps) => {
     if (novelId) {
       try {
         await api.post(`/admin/publish/${novelId}`);
-        alert("소설이 출품되었습니다.");
+        message.success("소설이 출품되었습니다.");
         router.push("/exhibit");
       } catch (error: any) {
         setError(`소설 출품에 실패했습니다: ${error.message}`);
+        message.error("소설 출품중 오류가 발생했습니다.");
       }
     }
   };

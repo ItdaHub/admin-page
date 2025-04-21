@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Input, message, Radio, Space } from "antd";
+import { Button, Input, Radio, Space } from "antd";
 import { useFormik } from "formik";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { MemberAddStyled } from "./styled";
@@ -9,8 +9,11 @@ import clsx from "clsx";
 import api from "@/utill/api";
 import { useRouter } from "next/router";
 import TitleCompo from "../TitleCompo";
+import { App as AntdApp } from "antd";
 
 const MemberAdd = ({ id }: { id?: number }) => {
+  const { message } = AntdApp.useApp();
+
   //id가 있으면 수정, 없으면 등록
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -94,17 +97,17 @@ const MemberAdd = ({ id }: { id?: number }) => {
         if (id) {
           // 수정
           await api.put(`/users/${id}`, filteredValues);
-          alert("수정 완료");
+          message.success("수정 완료");
           router.push("/users/manage");
         } else {
           // 추가
           await api.post("/users", registerData); // ✅ 경로 변경!
-          alert("추가 완료");
+          message.success("추가 완료");
           router.push("/users/manage");
         }
       } catch (error) {
         console.error("에러 발생:", error);
-        alert("오류 발생");
+        message.error("오류 발생");
       }
     },
   });

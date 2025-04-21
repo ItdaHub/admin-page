@@ -1,10 +1,8 @@
-import { useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
 import { HeaderStyled } from "./styled";
 import clsx from "clsx";
-
+import { BookOutlined } from "@ant-design/icons";
 export interface HeaderProps {
   className?: string;
 }
@@ -33,7 +31,9 @@ const Header = ({ className }: HeaderProps) => {
     >
       <div className="navigation">
         <div className="left">
-          <Link href="/dashboard">관리자 페이지</Link>
+          <Link href="/dashboard">
+            <BookOutlined /> 관리자 페이지
+          </Link>
         </div>
         <div
           className="right"
