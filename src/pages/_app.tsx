@@ -7,6 +7,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Spin } from "antd";
+import { App as AntdApp } from "antd";
 import "antd/dist/reset.css";
 
 const NO_HEADER_ROUTES = ["/login"];
@@ -69,7 +70,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <>
           <Header />
           <Template>
-            <Component {...pageProps} />
+            <AntdApp>
+              <Component {...pageProps} />
+            </AntdApp>
           </Template>
         </>
       )}

@@ -2,7 +2,8 @@ import clsx from "clsx";
 import { ReportDetailStyled } from "./styled";
 import api from "@/utill/api";
 import router from "next/router";
-import { Button } from "antd";
+import { Button, Modal } from "antd";
+import { App as AntdApp } from "antd";
 
 interface ReportData {
   id: number;
@@ -23,35 +24,55 @@ interface Props {
 }
 
 const ReportDetail = ({ data, target_type }: Props) => {
-  const handleDelete = async () => {
-    const confirm = window.confirm("정말 삭제하시겠습니까?");
-    if (!confirm) return;
-    console.log(data, "뭘 수정해야하나");
-    try {
-      await api.delete(`/reports/${data.id}`);
+  const { message } = AntdApp.useApp();
 
-      alert(
-        `${target_type === "comment" ? "댓글" : "소설"} 신고가 삭제되었습니다.`
-      );
-      router.push(`/reports/${target_type}`);
-    } catch (error) {
-      console.error("삭제 실패", error);
-      alert("삭제 중 오류가 발생했습니다.");
-    }
+  const handleDelete = async () => {
+    Modal.confirm({
+      title: "삭제하시겠습니까?",
+      content: "삭제한 내용은 복구할 수 없습니다.",
+      okText: "삭제",
+      cancelText: "취소",
+      okButtonProps: {
+        style: { backgroundColor: "#c47ad7" },
+      },
+      async onOk() {
+        try {
+          await api.delete(`/reports/${data.id}`);
+
+          message.success(
+            `${
+              target_type === "comment" ? "댓글" : "소설"
+            } 신고가 삭제되었습니다.`
+          );
+          router.push(`/reports/${target_type}`);
+        } catch (error) {
+          console.error("삭제 실패", error);
+          message.error("삭제 중 오류가 발생했습니다.");
+        }
+      },
+    });
   };
 
   const handleProcessReport = async () => {
-    const confirm = window.confirm("신고를 처리하시겠습니까?");
-    if (!confirm) return;
-
-    try {
-      await api.patch(`/reports/${data.id}/handle`);
-
-      router.push(`/reports/${target_type}`);
-    } catch (error) {
-      console.error("신고 처리 실패", error);
-      alert("신고 처리 중 오류가 발생했습니다.");
-    }
+    Modal.confirm({
+      title: "삭제하시겠습니까?",
+      content: "삭제한 내용은 복구할 수 없습니다.",
+      okText: "삭제",
+      cancelText: "취소",
+      okButtonProps: {
+        style: { backgroundColor: "#c47ad7" },
+      },
+      async onOk() {
+        try {
+          await api.patch(`/reports/${data.id}/handle`);
+          message.success("신고 처리되었습니다.");
+          router.push(`/reports/${target_type}`);
+        } catch (error) {
+          console.error("신고 처리 실패", error);
+          message.error("신고 처리 중 오류가 발생했습니다.");
+        }
+      },
+    });
   };
 
   return (

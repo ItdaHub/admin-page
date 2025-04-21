@@ -7,8 +7,10 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { useRouter } from "next/router";
 import TitleCompo from "@/components/TitleCompo";
+import { App as AntdApp } from "antd";
 
 const UserManage = () => {
+  const { message } = AntdApp.useApp();
   const [userOrder, setUserOrder] = useState("DESC");
   const [notiOrder, setNotiOrder] = useState("DESC");
   const [sortKey, setSortKey] = useState("created_at");
@@ -112,7 +114,7 @@ const UserManage = () => {
   // 회원삭제
   const WithdrawUser = async () => {
     if (selectedRowKeys.length === 0) {
-      alert("삭제할 회원을 선택해주세요.");
+      message.warning("삭제할 회원을 선택해주세요.");
       return;
     }
 
@@ -120,12 +122,12 @@ const UserManage = () => {
       await api.delete("/users/admin/delete", {
         data: { userIds: selectedRowKeys },
       });
-      alert("선택한 회원을 완전히 삭제했습니다.");
+      message.success("선택한 회원을 완전히 삭제했습니다.");
       getUserList(); // 목록 다시 불러오기
       setSelectedRowKeys([]); // 선택 초기화
     } catch (err) {
       console.error("회원 삭제 실패:", err);
-      alert("회원 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.");
+      message.error("회원 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.");
     }
   };
 

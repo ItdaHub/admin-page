@@ -5,6 +5,7 @@ import { Button, Table } from "antd";
 import { useRouter } from "next/router";
 import api from "@/utill/api";
 import clsx from "clsx";
+import { App as AntdApp } from "antd";
 
 interface Banner {
   id: number;
@@ -15,6 +16,7 @@ interface Banner {
 const BannerPage = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
   const router = useRouter();
+  const { message } = AntdApp.useApp();
 
   // 실제 배너 데이터 요청
   useEffect(() => {
@@ -44,11 +46,11 @@ const BannerPage = () => {
             prevBanners.filter((banner) => banner.id !== id)
           );
         } else {
-          alert("삭제를 실패했습니다. 다시 시도해주세요.");
+          message.error("삭제를 실패했습니다. 다시 시도해주세요.");
         }
       } catch (error) {
         console.error("삭제 중 오류 발생:", error);
-        alert("오류가 발생했습니다. 다시 시도해주세요.");
+        message.error("오류가 발생했습니다. 다시 시도해주세요.");
       }
     }
   };
