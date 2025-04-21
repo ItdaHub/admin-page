@@ -197,10 +197,10 @@ const MemberAdd = ({ id }: { id?: number }) => {
     validationNickName(userFormik.values.nickname);
     const isValid =
       userFormik.values.nickname.length >= 2 &&
-      userFormik.values.nickname.length <= 8;
+      userFormik.values.nickname.length <= 12;
 
     if (!isValid) {
-      setNickNameError("닉네임은 2~8자 사이여야 합니다.");
+      setNickNameError("닉네임은 2~12자 사이여야 합니다.");
       return;
     }
 
