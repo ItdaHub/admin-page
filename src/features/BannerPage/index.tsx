@@ -98,7 +98,7 @@ const BannerPage = () => {
       <div className="banner-box">
         <TitleCompo title="배너 관리" />
         <Button type="primary" onClick={() => router.push("/bannerform")}>
-          등록
+          배너 등록
         </Button>
       </div>
       <Table
@@ -114,7 +114,7 @@ const BannerPage = () => {
         })}
         locale={{
           emptyText:
-            "등록된 배너가 없습니다. 상단의 [등록] 버튼을 눌러 추가해보세요.",
+            "등록된 배너가 없습니다. 상단의 [배너 등록] 버튼을 눌러 추가해보세요.",
         }}
         rowClassName="banner-row"
       />

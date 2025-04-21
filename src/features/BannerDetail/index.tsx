@@ -44,7 +44,7 @@ const BannerDetail = () => {
           <Descriptions column={1} bordered size="middle">
             <Descriptions.Item label="ID">{banner.id}</Descriptions.Item>
             <Descriptions.Item label="제목">{banner.title}</Descriptions.Item>
-            <Descriptions.Item label="이미지 미리보기">
+            <Descriptions.Item label="배너 미리보기">
               <img
                 className="detail-image"
                 src={`http://localhost:5001${banner.image_path}`}

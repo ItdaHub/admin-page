@@ -2,16 +2,14 @@ import styled from "styled-components";
 
 export const ReportDetailStyled = styled.div`
   &.reportdetail-wrap {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 40px 60px;
+    padding: 40px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: none;
     border: 1px solid #e5e5e5;
     font-family: "Pretendard", sans-serif;
 
-    .header {
+    .report-header {
       font-size: 22px;
       font-weight: 600;
       margin-bottom: 32px;
@@ -19,7 +17,7 @@ export const ReportDetailStyled = styled.div`
       border-bottom: 2px solid #eee;
       padding-bottom: 12px;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
     }
 
     .row {

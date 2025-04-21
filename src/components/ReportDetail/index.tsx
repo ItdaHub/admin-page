@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { ReportDetailStyled } from "./styled";
 import api from "@/utill/api";
 import router from "next/router";
+import { Button } from "antd";
 
 interface ReportData {
   id: number;
@@ -55,9 +56,10 @@ const ReportDetail = ({ data, target_type }: Props) => {
 
   return (
     <ReportDetailStyled className={clsx("reportdetail-wrap")}>
-      <h2 className="header">
-        {target_type === "comment" ? "댓글" : "소설"} 신고 상세 보기
-      </h2>
+      <div className="report-header">
+        <div>{target_type === "comment" ? "댓글" : "소설"} 신고 상세</div>
+        <Button>목록으로</Button>
+      </div>
 
       <div className="row">
         <div className="label">신고자 ID</div>
@@ -87,7 +89,7 @@ const ReportDetail = ({ data, target_type }: Props) => {
       </div>
 
       <div className="row">
-        <div className="label">신고 날짜</div>
+        <div className="label">신고일</div>
         <div className="value">
           {data.created_at.replace("T", " ").slice(0, 19)}
         </div>

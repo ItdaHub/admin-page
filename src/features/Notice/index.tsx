@@ -135,7 +135,7 @@ const NoticeManage = () => {
       width: "15%",
     },
     {
-      title: "작성일자",
+      title: "작성일",
       dataIndex: "created_at",
       render: (_: any, record) =>
         record.created_at.replace("T", " ").slice(0, 19),
