@@ -215,7 +215,6 @@ const NoticeManage = () => {
         <Button
           type="primary"
           danger
-          icon={<DeleteOutlined />}
           disabled={selectedRowKeys.length === 0}
           onClick={selectDelete}
         >
