@@ -58,7 +58,7 @@ const MemberAdd = ({ id }: { id?: number }) => {
         message.info("이메일과 닉네임 중복검사를 완료해주세요.");
         return;
       }
-      const { passwordCheck, ...filteredValues } = values;
+      const { passwordCheck, birthYear, ...filteredValues } = values;
 
       console.log("뭐가 들었나", filteredValues);
 
@@ -89,7 +89,6 @@ const MemberAdd = ({ id }: { id?: number }) => {
           birthYear: values.birthYear,
           phone: values.phone,
           type: "local",
-          age_group: ageGroup,
           user_type: values.user_type,
           status: values.status,
         };
