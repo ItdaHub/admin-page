@@ -1,11 +1,12 @@
 import TitleCompo from "@/components/TitleCompo";
 import { BannerPageStyled } from "./styled";
 import { useEffect, useState } from "react";
-import { Button, Table } from "antd";
+import { Button, Modal, Table } from "antd";
 import { useRouter } from "next/router";
 import api from "@/utill/api";
 import clsx from "clsx";
 import { App as AntdApp } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 interface Banner {
   id: number;
@@ -35,24 +36,32 @@ const BannerPage = () => {
   // 한 행 삭제
   const handleDelete = async (e: React.MouseEvent, id: any) => {
     e.preventDefault();
-    const confirm = window.confirm("배너를 삭제하시겠습니까?");
+    Modal.confirm({
+      title: "배너를 삭제하겠습니까?",
+      icon: <ExclamationCircleOutlined />,
+      content: "삭제시 복구할 수 없습니다.",
+      okText: "예",
+      cancelText: "아니오",
+      okButtonProps: {
+        style: { backgroundColor: "#c47ad7" },
+      },
+      async onOk() {
+        try {
+          const response = await api.delete(`/banner/${id}`);
 
-    if (confirm) {
-      try {
-        const response = await api.delete(`/banner/${id}`);
-
-        if (response.status === 200) {
-          setBanners((prevBanners) =>
-            prevBanners.filter((banner) => banner.id !== id)
-          );
-        } else {
-          message.error("삭제를 실패했습니다. 다시 시도해주세요.");
+          if (response.status === 200) {
+            setBanners((prevBanners) =>
+              prevBanners.filter((banner) => banner.id !== id)
+            );
+          } else {
+            message.error("삭제를 실패했습니다. 다시 시도해주세요.");
+          }
+        } catch (error) {
+          console.error("삭제 중 오류 발생:", error);
+          message.error("오류가 발생했습니다. 다시 시도해주세요.");
         }
-      } catch (error) {
-        console.error("삭제 중 오류 발생:", error);
-        message.error("오류가 발생했습니다. 다시 시도해주세요.");
-      }
-    }
+      },
+    });
   };
 
   const columns = [

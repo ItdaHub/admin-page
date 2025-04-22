@@ -89,7 +89,6 @@ const MemberAdd = ({ id }: { id?: number }) => {
           birthYear: values.birthYear,
           phone: values.phone,
           type: "local",
-          age_group: ageGroup,
           user_type: values.user_type,
           status: values.status,
         };

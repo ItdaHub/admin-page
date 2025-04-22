@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
-import { Table, Button, message, Select } from "antd";
+import { Table, Button, message, Select, Modal } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  DeleteOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
 import { NoticeStyled } from "./styled";
 import clsx from "clsx";
 import { useRouter } from "next/router";
@@ -85,23 +89,31 @@ const NoticeManage = () => {
       message.warning("삭제할 공지사항을 선택해주세요.");
       return;
     }
-
-    const confirm = window.confirm("선택한 공지사항을 삭제하시겠습니까?");
-    if (confirm) {
-      try {
-        await Promise.all(
-          selectedRowKeys.map((id) => api.delete(`/announcement/${id}`))
-        );
-        message.success("선택한 공지사항을 삭제했습니다.");
-        setSelectedRowKeys([]);
-        getNotiList();
-      } catch (err) {
-        console.error("공지사항 삭제 실패:", err);
-        message.error(
-          "공지사항 삭제에 실패했습니다. 잠시 후 다시 시도해주세요."
-        );
-      }
-    }
+    Modal.confirm({
+      title: "공지사항을 삭제하겠습니까?",
+      icon: <ExclamationCircleOutlined />,
+      content: "삭제시 복구할 수 없습니다.",
+      okText: "예",
+      cancelText: "아니오",
+      okButtonProps: {
+        style: { backgroundColor: "#c47ad7" },
+      },
+      async onOk() {
+        try {
+          await Promise.all(
+            selectedRowKeys.map((id) => api.delete(`/announcement/${id}`))
+          );
+          message.success("선택한 공지사항을 삭제했습니다.");
+          setSelectedRowKeys([]);
+          getNotiList();
+        } catch (err) {
+          console.error("공지사항 삭제 실패:", err);
+          message.error(
+            "공지사항 삭제에 실패했습니다. 잠시 후 다시 시도해주세요."
+          );
+        }
+      },
+    });
   };
 
   const sortedNoti = [...noti].sort((a, b) => {
