@@ -21,6 +21,7 @@ export const BannerFormStyled = styled.div`
 
       .form-image {
         width: 100%;
+        height: 416.29px;
         margin-top: 10px;
         object-fit: cover;
       }
