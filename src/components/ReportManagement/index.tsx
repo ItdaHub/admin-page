@@ -92,13 +92,16 @@ const ReportManagement = ({ data, target_type }: Props) => {
       title: "번호",
       dataIndex: "num",
       render: (_: any, __: any, index: number) => index + 1,
+      width: "8%",
     },
-    { title: "신고 이유", dataIndex: "reason", key: "reason" },
+    { title: "신고 이유", dataIndex: "reason", key: "reason", width: "27%" },
+
     {
       title: "신고 대상",
       dataIndex: "reported_content",
       key: "reported_content",
       render: (text: string) => text || "내용 없음",
+      width: "35%",
     },
     {
       title: "신고자",
@@ -106,6 +109,7 @@ const ReportManagement = ({ data, target_type }: Props) => {
       key: "reporterId",
       render: (_: any, record: any) =>
         record?.reporter?.nickname || record?.reporter?.name || "알 수 없음",
+      width: "10%",
     },
     {
       title: "신고일",
@@ -115,6 +119,7 @@ const ReportManagement = ({ data, target_type }: Props) => {
         record.created_at.replace("T", " ").slice(0, 19),
       sorter: (a: ReportData, b: ReportData) =>
         new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      width: "20%",
     },
   ];
 
