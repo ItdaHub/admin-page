@@ -55,10 +55,10 @@ const ReportDetail = ({ data, target_type }: Props) => {
 
   const handleProcessReport = async () => {
     Modal.confirm({
-      title: "삭제하시겠습니까?",
-      content: "삭제한 내용은 복구할 수 없습니다.",
-      okText: "삭제",
-      cancelText: "취소",
+      title: "신고 처리하시겠습니까?",
+      content: "신고되면 사용자에게 알림이 갑니다.",
+      okText: "예",
+      cancelText: "아니오",
       okButtonProps: {
         style: { backgroundColor: "#c47ad7" },
       },
