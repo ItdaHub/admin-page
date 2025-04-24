@@ -124,7 +124,7 @@ const NovelDetail = ({ novelId, status }: NovelDetailProps) => {
       key: "authorNickname",
     },
     {
-      title: "신고 횟수",
+      title: "신고",
       dataIndex: "reportCount",
       key: "reportCount",
     },
@@ -132,7 +132,7 @@ const NovelDetail = ({ novelId, status }: NovelDetailProps) => {
 
   return (
     <NovelDetailStyled className={clsx("detail-wrap")}>
-      <h3>{novelDetail.title}</h3>
+      <div className="detail-title">{novelDetail.title}</div>
       <Table
         dataSource={novelDetail.chapters}
         columns={columns}
