@@ -55,11 +55,11 @@
 
 ## 💡 주요 기능
 * 로그인: DB에 등록된 관리자 계정만 접속 가능
-<img width="900" alt="Image" src="https://github.com/user-attachments/assets/0cc39080-1076-45a4-bbcb-90469299c0d1" />
+<img width=1000" alt="Image" src="https://github.com/user-attachments/assets/0cc39080-1076-45a4-bbcb-90469299c0d1" />
 
 
 * 대시보드: 좋아요, 조회수, 점수 기반 그래프 (chart.js 활용)
-<img width="900" alt="Image" src="https://github.com/user-attachments/assets/81001205-0abc-4ef3-833d-d331f723c828" />
+<img width="1000" alt="Image" src="https://github.com/user-attachments/assets/81001205-0abc-4ef3-833d-d331f723c828" />
 
 * 회원 관리: 관리자의 권한으로 새 회원을 추가, 기존 회원의 정보를 수정 및 삭제, 모든 회원 정보를 엑셀파일로 다운로드 가능
 
@@ -73,7 +73,7 @@
 
 
 * 신고 관리: 신고 접수된 댓글과 소설의 회차의 신고 사유를 검토하여 신고 처리하거나 신고를 삭제 가능
-<img width="900" alt="Image" src="https://github.com/user-attachments/assets/ddf30441-d2c0-47da-aeba-faaad3d0a02c" />
+<img width="1000" alt="Image" src="https://github.com/user-attachments/assets/ddf30441-d2c0-47da-aeba-faaad3d0a02c" />
 
   
 * 공지사항 관리: 사용자들에게 전달할 공지사항을 직접 작성, 수정, 삭제 가능
@@ -88,7 +88,7 @@
 
   
 * 배너 관리: 메인 페이지에 노출될 배너 이미지를 등록하거나 삭제 가능
-  <img width="900" alt="Image" src="https://github.com/user-attachments/assets/ca528daa-1ece-433e-a3ef-da0b4d973d4b" />
+  <img width="1000" alt="Image" src="https://github.com/user-attachments/assets/ca528daa-1ece-433e-a3ef-da0b4d973d4b" />
   
 * 출품 관리: 자동으로 신청된 작품의 목록을 확인하고, 각 작품의 출품 여부를 판단하여 출품 처리 또는 삭제 처리 가능
 
@@ -97,8 +97,4 @@
 | <img width="450" alt="Image" src="https://github.com/user-attachments/assets/e5313882-7c52-4f8b-9ff5-db1d9391abe7" /> | <img width="450" alt="Image" src="https://github.com/user-attachments/assets/3f6babda-6e51-45ec-a9ad-5eaf5a3046e4" /> |
   
 
-<br/>
-<br/>
-
-## 💽 배포 주소 (예정)
 
