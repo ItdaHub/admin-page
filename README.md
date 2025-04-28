@@ -53,6 +53,12 @@
 <br/>
 <br/>
 
+## 🗒️기능정의서
+<img width="839" alt="Image" src="https://github.com/user-attachments/assets/ada0d079-8502-432e-a5c1-bdcfaa953575" />
+
+<br/>
+<br/>
+
 ## 💡 주요 기능
 * 로그인: DB에 등록된 관리자 계정만 접속 가능
 <img width="1000" alt="Image" src="https://github.com/user-attachments/assets/0cc39080-1076-45a4-bbcb-90469299c0d1" />
