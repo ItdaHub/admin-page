@@ -67,18 +67,19 @@
 |------------|-----------------------|
 | <img width="450" alt="Image" src="https://github.com/user-attachments/assets/9eaefef3-570a-4f48-bf76-1f155abe3dbf" /> | <img width="450" alt="Image" src="https://github.com/user-attachments/assets/60e88640-9ad4-443d-ac5c-257f444bad84" /> |
 
-| 회원 삭제      | 회원정보 엑셀 다운로드                  |
+| 회원 삭제      | 회원정보 엑셀 다운로드    |
 |------------|-----------------------|
 | <img width="450" alt="Image" src="https://github.com/user-attachments/assets/32836e4e-8865-4c2a-9e28-c1c9d9dd5210" /> | <img width="450" alt="Image" src="https://github.com/user-attachments/assets/b004f5b8-f7dc-4077-a304-57e7a6c09f41" /> |
 
 
 * 신고 관리: 신고 접수된 댓글과 소설의 회차의 신고 사유를 검토하여 신고 처리하거나 신고를 삭제 가능
+<img width="900" alt="Image" src="https://github.com/user-attachments/assets/ddf30441-d2c0-47da-aeba-faaad3d0a02c" />
 
   
 * 공지사항 관리: 사용자들에게 전달할 공지사항을 직접 작성, 수정, 삭제 가능
 
-| 공지사항 등록      | 공지사항 수정                  |
-|------------|-----------------------|
+| 공지사항 등록      | 공지사항 수정      |
+|----------------|-------------------|
 | <img width="450" alt="Image" src="https://github.com/user-attachments/assets/054a1f76-1a5a-4adc-a32e-0158fa4583ea" /> | <img width="450" alt="Image" src="https://github.com/user-attachments/assets/0bc99df9-1783-4932-971c-b70cac629d55" /> |
 
 | 공지사항 삭제      | 
@@ -91,6 +92,9 @@
   
 * 출품 관리: 자동으로 신청된 작품의 목록을 확인하고, 각 작품의 출품 여부를 판단하여 출품 처리 또는 삭제 처리 가능
 
+| 출품하기      | 삭제하기            |
+|---------------|---------------------|
+| <img width="450" alt="Image" src="https://github.com/user-attachments/assets/e5313882-7c52-4f8b-9ff5-db1d9391abe7" /> | <img width="450" alt="Image" src="https://github.com/user-attachments/assets/3f6babda-6e51-45ec-a9ad-5eaf5a3046e4" /> |
   
 
 <br/>
