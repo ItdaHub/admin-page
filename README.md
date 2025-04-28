@@ -55,7 +55,7 @@
 
 ## 💡 주요 기능
 * 로그인: DB에 등록된 관리자 계정만 접속 가능
-<img width=1000" alt="Image" src="https://github.com/user-attachments/assets/0cc39080-1076-45a4-bbcb-90469299c0d1" />
+<img width="1000" alt="Image" src="https://github.com/user-attachments/assets/0cc39080-1076-45a4-bbcb-90469299c0d1" />
 
 
 * 대시보드: 좋아요, 조회수, 점수 기반 그래프 (chart.js 활용)
